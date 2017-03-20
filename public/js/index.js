@@ -16,6 +16,14 @@ exports.FooterController = function($scope) {
 exports.InvoicesGridController = function($scope) {
   $scope.mensaje = "saludos";
 };
+
+exports.SetupInvoicesController = function($scope) {
+  var days = [];
+  for( i = 1 ; i <= 31 ; i++ ){
+    days.push(i);
+  }
+  $scope.days = days;
+};
 },{}],2:[function(require,module,exports){
 exports.navBar = function() {
   return {
@@ -35,6 +43,13 @@ exports.invoicesGrid = function() {
   return {
     controller: 'InvoicesGridController',
     templateUrl: '../templates/invoices_grid.html'
+  };
+};
+
+exports.setupInvoices = function() {
+  return {
+    controller: 'SetupInvoicesController',
+    templateUrl: '../templates/setup_invoices.html'
   };
 };
 },{}],3:[function(require,module,exports){
@@ -59,8 +74,8 @@ app.config(['$routeProvider', '$locationProvider',function($routeProvider, $loca
     when('/', {
       template: '<invoices-grid></invoices-grid>'
     })
-    .when('/checkout', {
-      template: '<h2>checkout</h2>'
+    .when('/setup', {
+      template: '<setup-invoices></setup-invoices>'
     })
     .otherwise({
         template : "<h1>None</h1><p>Nothing has been selected</p>"

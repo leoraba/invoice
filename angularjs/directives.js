@@ -18,3 +18,10 @@ exports.invoicesGrid = function() {
     templateUrl: '../templates/invoices_grid.html'
   };
 };
+
+exports.setupInvoices = function() {
+  return {
+    controller: 'SetupInvoicesController',
+    templateUrl: '../templates/setup_invoices.html'
+  };
+};

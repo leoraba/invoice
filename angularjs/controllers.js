@@ -15,3 +15,11 @@ exports.FooterController = function($scope) {
 exports.InvoicesGridController = function($scope) {
   $scope.mensaje = "saludos";
 };
+
+exports.SetupInvoicesController = function($scope) {
+  var days = [];
+  for( i = 1 ; i <= 31 ; i++ ){
+    days.push(i);
+  }
+  $scope.days = days;
+};

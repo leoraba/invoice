@@ -19,8 +19,8 @@ app.config(['$routeProvider', '$locationProvider',function($routeProvider, $loca
     when('/', {
       template: '<invoices-grid></invoices-grid>'
     })
-    .when('/checkout', {
-      template: '<h2>checkout</h2>'
+    .when('/setup', {
+      template: '<setup-invoices></setup-invoices>'
     })
     .otherwise({
         template : "<h1>None</h1><p>Nothing has been selected</p>"

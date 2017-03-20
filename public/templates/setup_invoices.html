@@ -1,0 +1,125 @@
+<div class="container">
+    <div class="div-container">
+        <br><br>
+        <div class="row">
+            <div class="col s12 m12 l6">
+                <h1>Recordatorios</h1>
+                <ul class="collapsible" data-collapsible="accordion">
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Monserrat</div>
+                        <div class="collapsible-body">
+                            <div class="row left-align">
+                                <div class="col s12">
+                                    <a class="btn-floating waves-effect waves-light red" data-target="addReminder" title="Agregar recordatorio" modal><i class="material-icons">add</i></a>
+                                </div>
+                            </div>  
+                            <br /><br />
+                            <ul class="collection">
+                                <li class="collection-item avatar">
+                                    <i class="material-icons circle">lightbulb_outline</i>
+                                    <span class="title">Del sur</span>
+                                    <p>Vence: 22 cada mes<br />
+                                        Aprox.: $7.50<br />
+                                        Nota: recoger recibo en casa
+                                    </p>
+                                    <div class="fixed-action-btn horizontal secondary-content">
+                                        <a class="btn-floating"><i class="material-icons">menu</i></a>
+                                        <ul>
+                                            <li><a class="btn-floating red" title="Eliminar"><i class="material-icons">delete</i></a></li>
+                                            <li><a class="btn-floating blue" title="Editar"><i class="material-icons">mode_edit</i></a></li>
+                                        </ul>
+                                    </div>
+                                    </li>
+                                    <li class="collection-item avatar">
+                                    <i class="material-icons circle">local_drink</i>
+                                    <span class="title">Anda</span>
+                                    <p>Vence: 13 cada mes<br />
+                                        Aprox: $2.39
+                                    </p>
+                                    <div class="fixed-action-btn horizontal secondary-content">
+                                        <a class="btn-floating"><i class="material-icons">menu</i></a>
+                                        <ul>
+                                            <li><a class="btn-floating red" title="Eliminar"><i class="material-icons">delete</i></a></li>
+                                            <li><a class="btn-floating blue" title="Editar"><i class="material-icons">mode_edit</i></a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>        
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">place</i>Zonte</div>
+                        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row center-align">
+            <div class="col s12 m12 l6">
+                <a class="btn-floating btn-large waves-effect waves-light red" data-target="addCategory" title="Agregar Categoria" modal><i class="material-icons">add</i></a>
+            </div>                
+        </div>
+
+        <div id="addCategory" class="modal">
+            <div class="modal-content">
+                <h4>Categoria</h4>
+                <form>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="category" type="text">
+                            <label for="category">Categoria</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
+                <a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>
+            </div>
+        </div>
+        <div id="addReminder" class="modal">
+            <div class="modal-content">
+                <h4>Recordatorio</h4>
+                <form>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="title" type="text" />
+                            <label for="title">Titulo</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <select class="icons"  material-select>
+                                <option value="" disabled selected>Seleccione el icono</option>
+                                <option value="" data-icon="images/sample-1.jpg" class="left circle">Electricidad</option>
+                                <option value="" data-icon="images/sample-1.jpg" class="left circle">Agua</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select material-select>
+                                <option value="" disabled selected>Fecha de vencimiento</option>
+                                <option ng-repeat="day in days" >{{day}}</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="aprox" type="text" />
+                            <label for="aprox"> Valor aproximado $</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="note" class="materialize-textarea"></textarea>
+                            <label for="note">Nota</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
+                <a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>
+            </div>
+        </div>
+        <br />
+        <br />
+    </div>
+</div>
