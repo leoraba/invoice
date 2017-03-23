@@ -8,9 +8,12 @@ module.exports = function(wagner) {
 
   api.use(bodyparser.json());
 
-  // api.get('/', function(req, res){
-  //     res.render('../public/html/main');
-  // });
+  api.get('/h1', 
+    require('connect-ensure-login').ensureLoggedIn('/login'), 
+    function(req, res){
+      res.send('esto es la api');
+    }
+  );
 
   return api;
 };

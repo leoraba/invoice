@@ -5,10 +5,19 @@ require('./models/models')(wagner);
 
 var app = express();
 
+//log in console
+app.use(require('morgan')('dev'));
+
+//public resources to be accessed by client html/js/css/img
 app.use(express.static(__dirname + '/public'));
 
-app.use('/', require('./controllers/main')(wagner));
+//authentication
+wagner.invoke(require('./controllers/auth'), { app: app });
 
+//api routes
+app.use('/api', require('./controllers/main')(wagner));
+
+//redirect to index.html page where angular will route internally
 app.use('/*', function(req, res){
     res.sendFile(__dirname + '/public/index.html');
 });
