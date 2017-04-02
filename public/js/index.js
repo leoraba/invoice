@@ -1,4 +1,47 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+angular.module('AuthService', ['ngResource', 'ngStorage'])
+.factory('Auth', function($resource, $rootScope, $sessionStorage, $q, $http){
+      
+    var auth = {};
+     
+    /**
+     *  Saves the current user in the root scope
+     *  Call this in the app run() method
+     */
+    auth.init = function(){
+        if (auth.isLoggedIn()){
+            $rootScope.user = currentUser();
+        }
+    };
+         
+    auth.login = function(credentials, resolve){
+        $http.post('/api/authenticate', credentials)
+            .then(function (response) {
+                $sessionStorage.user = response.data;
+                $rootScope.user = $sessionStorage.user;
+                resolve(response.data);
+            });
+    };
+     
+ 
+    auth.logout = function() {
+        delete $sessionStorage.user;
+        delete $rootScope.user;
+    };     
+     
+    auth.currentUser = function(){
+        return $sessionStorage.user;
+    };
+     
+     
+    auth.isLoggedIn = function(){
+        return $sessionStorage.user != null;
+    };
+     
+ 
+    return auth;
+});
+},{}],2:[function(require,module,exports){
 exports.NavBarController = function($scope) {
 
   setTimeout(function() {
@@ -24,7 +67,21 @@ exports.SetupInvoicesController = function($scope) {
   }
   $scope.days = days;
 };
-},{}],2:[function(require,module,exports){
+
+exports.LoginController = function($scope, Auth, $location){
+  $scope.credentials = {};
+  $scope.login = function(){
+    Auth.login($scope.credentials, function(data) {
+      if(data.success) {
+          $location.path('/');
+      } else {
+          $scope.error = data.message;
+          $scope.dataLoading = false;
+      }
+    });
+  }
+};
+},{}],3:[function(require,module,exports){
 exports.navBar = function() {
   return {
     controller: 'NavBarController',
@@ -52,9 +109,10 @@ exports.setupInvoices = function() {
     templateUrl: '../templates/setup_invoices.html'
   };
 };
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var controllers = require('./controllers');
 var directives = require('./directives');
+var auth = require('./authentication');
 var _ = require('underscore');
 
 var components = angular.module('mean-invoice.components', ['ng']);
@@ -67,26 +125,45 @@ _.each(directives, function(directive, name) {
   components.directive(name, directive);
 });
 
-var app = angular.module('mean-invoice', ['mean-invoice.components', 'ngRoute', 'ui.materialize']);
+var app = angular.module('mean-invoice', ['mean-invoice.components', 'ui.router', 'ui.materialize', 'AuthService']);
 
-app.config(['$routeProvider', '$locationProvider',function($routeProvider, $locationProvider) {
-  $routeProvider.
-    when('/', {
+app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+  $urlRouterProvider.otherwise('/');
+  $stateProvider
+  .state('home', {
+      url: '/',
       template: '<invoices-grid></invoices-grid>'
-    })
-    .when('/setup', {
-      template: '<setup-invoices></setup-invoices>'
-    })
-    .otherwise({
-        template : "<h1>None</h1><p>Nothing has been selected</p>"
-    });
-    $locationProvider.html5Mode({
-      enabled: true,
-      requireBase: false
-    });
-}]);
+  })
+  .state('setup', {
+      url: '/setup',
+      template: '<setup-invoices></setup-invoices>',
+      requiresAuth: true
+  })
+  .state('login', {
+      url: '/login',
+      templateUrl: '../templates/login.html',
+      controller: 'LoginController'
+  })
 
-},{"./controllers":1,"./directives":2,"underscore":4}],4:[function(require,module,exports){
+  $locationProvider.html5Mode({
+    enabled: true,
+    requireBase: false
+  });
+});
+
+app.run(function ($rootScope, $state, Auth) {
+  $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+    if (toState.requiresAuth && !Auth.isLoggedIn()){
+      // User isn’t authenticated
+      $state.transitionTo("login");
+      event.preventDefault(); 
+    }
+  });
+});
+
+
+
+},{"./authentication":1,"./controllers":2,"./directives":3,"underscore":5}],5:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -1636,4 +1713,4 @@ app.config(['$routeProvider', '$locationProvider',function($routeProvider, $loca
   }
 }.call(this));
 
-},{}]},{},[3])
+},{}]},{},[4])

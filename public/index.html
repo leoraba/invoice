@@ -1,4 +1,4 @@
-<html ng-app="mean-invoice">
+<html>
   <head>
 
     <!-- Materialize CSS -->
@@ -8,7 +8,9 @@
     <!-- JavaScript for: jQuery, angular, materialize, and angular-materialize. All of which are needed. -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="https://code.angularjs.org/1.6.3/angular.min.js"></script>
-    <script type="text/javascript" src="https://code.angularjs.org/1.6.3/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.6.4/angular-resource.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/angular-ui-router@0.4.2/release/angular-ui-router.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.2.2/angular-materialize.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
@@ -16,10 +18,10 @@
 
 
   </head>
-  <body>
+  <body ng-app="mean-invoice">
     <nav-bar></nav-bar>
 
-    <div class="content-wrapper" ng-view></div>
+    <ui-view></ui-view>
 
     <footer-bar></footer-bar>
     

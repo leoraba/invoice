@@ -1,7 +1,6 @@
 var bodyparser = require('body-parser');
 var express = require('express');
 var status = require('http-status');
-var _ = require('underscore');
 
 module.exports = function(wagner) {
   var api = express.Router();
@@ -11,9 +10,13 @@ module.exports = function(wagner) {
   api.get('/h1', 
     require('connect-ensure-login').ensureLoggedIn('/login'), 
     function(req, res){
-      res.send('esto es la api');
+      res.json({msg: "Esto es una api segura"});
     }
   );
+
+  api.post('/authenticate', function(req, res){
+    res.json({success: true});
+  });
 
   return api;
 };
