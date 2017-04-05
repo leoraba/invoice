@@ -2,18 +2,14 @@
     <div class="nav-wrapper orange">
       <a href="#" class="brand-logo"><i class="material-icons">cloud</i>Invoice</a>
       <ul class="right">
-        <li>
-           <form>
-            <div class="input-field">
-              <input id="search" type="search" placeholder="Busqueda" required>
-              <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-              <i class="material-icons">close</i>
-            </div>
-          </form>
-        </li>
-        <li><a href="/" title="Inicio"><i class="material-icons">home</i></a></li>
-        <li><a href="/setup" title="Configuracion"><i class="material-icons">view_module</i></a></li>
-        <li><a href="#"><i class="material-icons">more_vert</i></a></li>
+        <li ng-show="user"><a href="/" title="Inicio"><i class="material-icons">home</i></a></li>
+        <li ng-show="user"><a href="/setup" title="Configuracion"><i class="material-icons">view_module</i></a></li>
+        <li ng-show="user"><a class="dropdown-button" href='#' data-activates="dropdown1" dropdown><i class="material-icons right">more_vert</i><span ng-bind="user.name"></a></li>
+      </ul>
+      <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#">Configuracion</a></li>
+        <li class="divider"></li>
+        <li><a href="/logout">Salir</a></li>
       </ul>
     </div>
   </nav>

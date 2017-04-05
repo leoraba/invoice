@@ -17,8 +17,10 @@ angular.module('AuthService', ['ngResource', 'ngStorage'])
     auth.login = function(credentials, resolve){
         $http.post('/api/authenticate', credentials)
             .then(function (response) {
-                $sessionStorage.user = response.data;
-                $rootScope.user = $sessionStorage.user;
+                if(response.data.success){
+                    $sessionStorage.user = response.data.user;
+                    $rootScope.user = $sessionStorage.user;
+                }
                 resolve(response.data);
             });
     };
@@ -42,11 +44,13 @@ angular.module('AuthService', ['ngResource', 'ngStorage'])
     return auth;
 });
 },{}],2:[function(require,module,exports){
-exports.NavBarController = function($scope) {
-
-  setTimeout(function() {
-    $scope.$emit('NavBarController');
-  }, 0);
+exports.NavBarController = function($scope, Auth) {
+  if(Auth.isLoggedIn()){
+    $scope.user = Auth.currentUser();
+    setTimeout(function() {
+      $scope.$emit('NavBarController');
+    }, 0);
+  }
 };
 
 exports.FooterController = function($scope) {
@@ -81,6 +85,27 @@ exports.LoginController = function($scope, Auth, $location){
     });
   }
 };
+
+exports.RegisterController = function($scope, $http, $location){
+  $scope.user = {};
+
+  $scope.register = function(){
+    $http.post('/api/register', $scope.user)
+    .then(function (response) {
+        if(response.data.success) {
+          $location.path('/');
+        } else {
+            $scope.error = response.data.message;
+            $scope.dataLoading = false;
+        }
+    });
+  };
+}
+
+exports.LogoutController = function($scope, Auth, $location){
+  Auth.logout();
+  $location.path('/');
+}
 },{}],3:[function(require,module,exports){
 exports.navBar = function() {
   return {
@@ -93,20 +118,6 @@ exports.footerBar = function() {
   return {
     controller: 'FooterController',
     templateUrl: '../templates/footer_bar.html'
-  };
-};
-
-exports.invoicesGrid = function() {
-  return {
-    controller: 'InvoicesGridController',
-    templateUrl: '../templates/invoices_grid.html'
-  };
-};
-
-exports.setupInvoices = function() {
-  return {
-    controller: 'SetupInvoicesController',
-    templateUrl: '../templates/setup_invoices.html'
   };
 };
 },{}],4:[function(require,module,exports){
@@ -132,17 +143,29 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
   $stateProvider
   .state('home', {
       url: '/',
-      template: '<invoices-grid></invoices-grid>'
+      controller: 'InvoicesGridController',
+      templateUrl: '../templates/invoices_grid.html',
+      requiresAuth: true
   })
   .state('setup', {
       url: '/setup',
-      template: '<setup-invoices></setup-invoices>',
+      controller: 'SetupInvoicesController',
+      templateUrl: '../templates/setup_invoices.html',
       requiresAuth: true
   })
   .state('login', {
       url: '/login',
       templateUrl: '../templates/login.html',
       controller: 'LoginController'
+  })
+  .state('register', {
+      url: '/register',
+      templateUrl: '../templates/register.html',
+      controller: 'RegisterController'
+  })
+  .state('logout', {
+      url: '/logout',
+      controller: 'LogoutController'
   })
 
   $locationProvider.html5Mode({
@@ -153,6 +176,13 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
 app.run(function ($rootScope, $state, Auth) {
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+    
+    if(toState.name == "login" && Auth.isLoggedIn()){
+      // user is already logged in redirect to home
+      event.preventDefault();
+      $state.go('home');
+    }
+    
     if (toState.requiresAuth && !Auth.isLoggedIn()){
       // User isn’t authenticated
       $state.transitionTo("login");

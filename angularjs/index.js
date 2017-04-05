@@ -20,17 +20,29 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
   $stateProvider
   .state('home', {
       url: '/',
-      template: '<invoices-grid></invoices-grid>'
+      controller: 'InvoicesGridController',
+      templateUrl: '../templates/invoices_grid.html',
+      requiresAuth: true
   })
   .state('setup', {
       url: '/setup',
-      template: '<setup-invoices></setup-invoices>',
+      controller: 'SetupInvoicesController',
+      templateUrl: '../templates/setup_invoices.html',
       requiresAuth: true
   })
   .state('login', {
       url: '/login',
       templateUrl: '../templates/login.html',
       controller: 'LoginController'
+  })
+  .state('register', {
+      url: '/register',
+      templateUrl: '../templates/register.html',
+      controller: 'RegisterController'
+  })
+  .state('logout', {
+      url: '/logout',
+      controller: 'LogoutController'
   })
 
   $locationProvider.html5Mode({
@@ -41,6 +53,13 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
 app.run(function ($rootScope, $state, Auth) {
   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+    
+    if(toState.name == "login" && Auth.isLoggedIn()){
+      // user is already logged in redirect to home
+      event.preventDefault();
+      $state.go('home');
+    }
+    
     if (toState.requiresAuth && !Auth.isLoggedIn()){
       // User isn’t authenticated
       $state.transitionTo("login");

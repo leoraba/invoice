@@ -16,8 +16,10 @@ angular.module('AuthService', ['ngResource', 'ngStorage'])
     auth.login = function(credentials, resolve){
         $http.post('/api/authenticate', credentials)
             .then(function (response) {
-                $sessionStorage.user = response.data;
-                $rootScope.user = $sessionStorage.user;
+                if(response.data.success){
+                    $sessionStorage.user = response.data.user;
+                    $rootScope.user = $sessionStorage.user;
+                }
                 resolve(response.data);
             });
     };

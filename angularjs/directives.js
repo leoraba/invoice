@@ -11,17 +11,3 @@ exports.footerBar = function() {
     templateUrl: '../templates/footer_bar.html'
   };
 };
-
-exports.invoicesGrid = function() {
-  return {
-    controller: 'InvoicesGridController',
-    templateUrl: '../templates/invoices_grid.html'
-  };
-};
-
-exports.setupInvoices = function() {
-  return {
-    controller: 'SetupInvoicesController',
-    templateUrl: '../templates/setup_invoices.html'
-  };
-};

@@ -1,8 +1,10 @@
-exports.NavBarController = function($scope) {
-
-  setTimeout(function() {
-    $scope.$emit('NavBarController');
-  }, 0);
+exports.NavBarController = function($scope, Auth) {
+  if(Auth.isLoggedIn()){
+    $scope.user = Auth.currentUser();
+    setTimeout(function() {
+      $scope.$emit('NavBarController');
+    }, 0);
+  }
 };
 
 exports.FooterController = function($scope) {
@@ -37,3 +39,24 @@ exports.LoginController = function($scope, Auth, $location){
     });
   }
 };
+
+exports.RegisterController = function($scope, $http, $location){
+  $scope.user = {};
+
+  $scope.register = function(){
+    $http.post('/api/register', $scope.user)
+    .then(function (response) {
+        if(response.data.success) {
+          $location.path('/');
+        } else {
+            $scope.error = response.data.message;
+            $scope.dataLoading = false;
+        }
+    });
+  };
+}
+
+exports.LogoutController = function($scope, Auth, $location){
+  Auth.logout();
+  $location.path('/');
+}
