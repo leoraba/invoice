@@ -1,7 +1,9 @@
 var bodyparser = require('body-parser');
 var express = require('express');
-var status = require('http-status');
-var bcrypt = require('bcrypt');
+var status = require('http-status')
+var category = require('./category');
+var user = require('./user');
+var reminder = require('./reminder');
 
 module.exports = function(wagner) {
   var api = express.Router();
@@ -15,44 +17,22 @@ module.exports = function(wagner) {
     }
   );
 
-  api.post('/authenticate', wagner.invoke(function(User) {
-    return function(req, res){
-      User.findOne({ username: req.body.username }, function(error, user) {
-        if (error) {
-          console.log(error);
-          res.json({success: false, message: "Error: contacte al administrador del sistema"});
-        }
-        bcrypt.compare(req.body.password, user.password, function(err, result) {
-            if (err) {
-              console.log(error);
-              res.json({success: false, message: "Error: contacte al administrador del sistema"});
-            }
-            if(result){
-              res.json({success: true, user: { username: user.username, name: user.name }});
-            }else{
-              res.json({success: false, message: "Usuario y/o contraseña son incorrectos"});
-            }
-        });
-      });
-    }
-  }));
+  api.post('/authenticate', user.authenticateUser);
 
-  api.post('/register',  wagner.invoke(function(User) {
-    return function(req, res){
-      var user = new User({
-        username: req.body.email,
-        password: req.body.password,
-        name: req.body.name
-      });
-      user.save(function(error) {
-        if (error) {
-          console.log(error);
-          res.json({success: false});
-        }
-      });
-      res.json({success: true});
-    }
-  }));
+  api.post('/register', user.registerUser);
+
+  api.post('/category', category.newCategory);
+
+  api.delete('/category/:categoryId', category.deleteCategory);
+
+  api.get('/categories', category.getAllCategories);
+  
+
+  api.post('/reminder', reminder.addNewReminder);
+
+  api.delete('/reminder/:reminderId', reminder.deleteReminder);
+
+  api.get('/reminders/category/:categoryId', reminder.getRemindersByCategory);
 
   return api;
 };

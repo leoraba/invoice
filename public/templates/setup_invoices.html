@@ -5,52 +5,38 @@
             <div class="col s12 m12 l6">
                 <h1>Recordatorios</h1>
                 <ul class="collapsible" data-collapsible="accordion">
-                    <li>
-                        <div class="collapsible-header"><i class="material-icons">filter_drama</i>Monserrat</div>
+                    
+                    <li ng-repeat="cat in categories.categories">
+                        <div class="collapsible-header" ng-click="selectCategory(cat._id)"><i class="material-icons">filter_drama</i><span ng-bind="cat.name"></span></div>
                         <div class="collapsible-body">
-                            <div class="row left-align">
-                                <div class="col s12">
-                                    <a class="btn-floating waves-effect waves-light red" data-target="addReminder" title="Agregar recordatorio" modal><i class="material-icons">add</i></a>
-                                </div>
-                            </div>  
-                            <br /><br />
+                            <div class="right-align" style="margin-right: 100px">
+                                <a  href="#" ng-click="deleteCat(cat._id)" >Eliminar categoria</a>
+                            </div>
                             <ul class="collection">
-                                <li class="collection-item avatar">
+
+                                <li class="collection-item avatar" ng-repeat="reminder in reminders">
                                     <i class="material-icons circle">lightbulb_outline</i>
-                                    <span class="title">Del sur</span>
-                                    <p>Vence: 22 cada mes<br />
-                                        Aprox.: $7.50<br />
-                                        Nota: recoger recibo en casa
+                                    <span class="title" ng-bind="reminder.title"></span>
+                                    <p>Vence: <span ng-bind="reminder.lastDayToPay"></span> cada mes<br />
+                                        Aprox.: <span ng-bind="reminder.aproxAmount"></span><br />
+                                        Nota: <span ng-bind="reminder.note"></span>
                                     </p>
                                     <div class="fixed-action-btn horizontal secondary-content">
                                         <a class="btn-floating"><i class="material-icons">menu</i></a>
                                         <ul>
-                                            <li><a class="btn-floating red" title="Eliminar"><i class="material-icons">delete</i></a></li>
-                                            <li><a class="btn-floating blue" title="Editar"><i class="material-icons">mode_edit</i></a></li>
-                                        </ul>
-                                    </div>
-                                    </li>
-                                    <li class="collection-item avatar">
-                                    <i class="material-icons circle">local_drink</i>
-                                    <span class="title">Anda</span>
-                                    <p>Vence: 13 cada mes<br />
-                                        Aprox: $2.39
-                                    </p>
-                                    <div class="fixed-action-btn horizontal secondary-content">
-                                        <a class="btn-floating"><i class="material-icons">menu</i></a>
-                                        <ul>
-                                            <li><a class="btn-floating red" title="Eliminar"><i class="material-icons">delete</i></a></li>
-                                            <li><a class="btn-floating blue" title="Editar"><i class="material-icons">mode_edit</i></a></li>
+                                            <li><a class="btn-floating red" title="Eliminar" ng-click="removeReminder(reminder._id)"><i class="material-icons">delete</i></a></li>
+                                            <li><a class="btn-floating blue" title="Editar" ><i class="material-icons">mode_edit</i></a></li>
                                         </ul>
                                     </div>
                                 </li>
+                                <li  class="collection-item avatar">
+                                    <a class="btn-floating waves-effect waves-light red " data-target="addReminder" title="Agregar recordatorio" modal><i class="material-icons">add</i></a>
+                                </li>
+
                             </ul>        
                         </div>
                     </li>
-                    <li>
-                        <div class="collapsible-header"><i class="material-icons">place</i>Zonte</div>
-                        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -66,57 +52,59 @@
                 <form>
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="category" type="text">
+                            <input id="category" type="text" ng-model="newCategory.categoryName">
                             <label for="category">Categoria</label>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
-                <a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>
+                <a ng-click="saveNewCategory()" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
+                <a href="#" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>
             </div>
         </div>
         <div id="addReminder" class="modal">
             <div class="modal-content">
                 <h4>Recordatorio</h4>
                 <form>
+                    <input id="categoryId" type="hidden" ng-model="newReminder.categoryId" />
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="title" type="text" />
+                            <input id="title" type="text" ng-model="newReminder.title" />
                             <label for="title">Titulo</label>
                         </div>
                         <div class="input-field col s6">
-                            <select class="icons"  material-select>
-                                <option value="" disabled selected>Seleccione el icono</option>
-                                <option value="" data-icon="images/sample-1.jpg" class="left circle">Electricidad</option>
-                                <option value="" data-icon="images/sample-1.jpg" class="left circle">Agua</option>
+                            <select class="icons"  material-select ng-model="newReminder.kind">
+                                <option value="" disabled selected>Sub categoria</option>
+                                <option value="1" data-icon="images/sample-1.jpg" class="left circle">Electricidad</option>
+                                <option value="2" data-icon="images/sample-1.jpg" class="left circle">Agua</option>
+                                <option value="3" data-icon="images/sample-1.jpg" class="left circle">Telefono</option>
                             </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                            <select material-select>
+                            <select material-select ng-model="newReminder.lastDay">
                                 <option value="" disabled selected>Fecha de vencimiento</option>
                                 <option ng-repeat="day in days" >{{day}}</option>
                             </select>
                         </div>
                         <div class="input-field col s6">
-                            <input id="aprox" type="text" />
+                            <input id="aprox" type="text" ng-model="newReminder.aproxAmount" />
                             <label for="aprox"> Valor aproximado $</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <textarea id="note" class="materialize-textarea"></textarea>
+                            <textarea id="note" class="materialize-textarea" ng-model="newReminder.note"></textarea>
                             <label for="note">Nota</label>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
-                <a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>
+                <a ng-click="saveNewReminder()" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
+                <a href="#" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>
             </div>
         </div>
         <br />

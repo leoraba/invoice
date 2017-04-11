@@ -18,12 +18,91 @@ exports.InvoicesGridController = function($scope) {
   $scope.mensaje = "saludos";
 };
 
-exports.SetupInvoicesController = function($scope) {
+exports.SetupInvoicesController = function($scope, $http, $location) {
   var days = [];
   for( i = 1 ; i <= 31 ; i++ ){
     days.push(i);
   }
   $scope.days = days;
+  $scope.newCategory = {};
+  $scope.newReminder = {};
+  $scope.categories = {};
+
+  $scope.selectCategory = function(catId){
+    $scope.reminders = {};
+    $scope.newReminder.categoryId = catId;
+    $http.get('/api/reminders/category/' + catId )
+    .then(function (response) {
+      $scope.reminders = response.data.reminders;
+    });
+  }
+
+  $http.get('/api/categories')
+  .then(function (response) {
+    $scope.categories = {};
+    $scope.categories.categories = response.data.categories;
+  });
+  
+  //delete category
+  $scope.deleteCat = function(catId){
+    $http.delete('/api/category/' + catId)
+    .then(function (response) {
+      $http.get('/api/categories')
+      .then(function (response) {
+        $scope.categories = {};
+        $scope.categories.categories = response.data.categories;
+      });
+    });
+  }
+
+  //save new category
+  $scope.saveNewCategory = function(){
+    $http.post('/api/category', $scope.newCategory)
+    .then(function (response) {
+        if(response.data.success) {
+          $http.get('/api/categories')
+          .then(function (response) {
+              $scope.categories.categories = response.data.categories;
+          });
+        } else {
+            $scope.error = response.data.message;
+            $scope.dataLoading = false;
+        }
+    });
+  }
+
+  //save new reminder
+  $scope.saveNewReminder = function(){
+    $http.post('/api/reminder', $scope.newReminder)
+    .then(function (response) {
+        if(response.data.success) {
+          //get all data from categories and reminders
+          $http.get('/api/categories')
+          .then(function (response) {
+              $scope.categories.categories = response.data.categories;
+          });
+        } else {
+            $scope.error = response.data.message;
+            $scope.dataLoading = false;
+        }
+    });
+    $scope.newReminder = {};
+  }
+  $scope.removeReminder = function($reminderId){
+    $http.delete('/api/reminder/' + $reminderId)
+    .then(function (response) {
+        if(response.data.success) {
+          //get all data from categories and reminders
+          $http.get('/api/categories')
+          .then(function (response) {
+              $scope.categories.categories = response.data.categories;
+          });
+        } else {
+            $scope.error = response.data.message;
+            $scope.dataLoading = false;
+        }
+    });
+  }
 };
 
 exports.LoginController = function($scope, Auth, $location){

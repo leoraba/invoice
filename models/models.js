@@ -10,12 +10,9 @@ module.exports = function(wagner) {
 
   var Invoice =
     mongoose.model('Invoice', require('./invoice'), 'invoices');
-  var User =
-    mongoose.model('User', require('./user'), 'users');
 
   var models = {
     Invoice: Invoice,
-    User: User
   };
 
   // To ensure DRY-ness, register factories in a loop

@@ -1,4 +1,6 @@
-function setupAuth(User, app) {
+var User = require("../models/user");
+
+function setupAuth(app) {
     var passport = require('passport');
     var LocalStrategy = require('passport-local').Strategy;
 
