@@ -4,19 +4,18 @@
         <div class="row">
             <div class="col s12 m12 l6">
                 <h1>Recordatorios</h1>
-                <ul class="collapsible" data-collapsible="accordion">
+                <ul class="collapsible" data-collapsible="accordion" ng-show="categories.categories.length > 0">
                     
                     <li ng-repeat="cat in categories.categories">
                         <div class="collapsible-header" ng-click="selectCategory(cat._id)"><i class="material-icons">filter_drama</i><span ng-bind="cat.name"></span></div>
-                        <div class="collapsible-body">
+                        <div class="collapsible-body grey lighten-1">
                             <div class="right-align" style="margin-right: 100px">
                                 <a  href="#" ng-click="deleteCat(cat._id)" >Eliminar categoria</a>
                             </div>
                             <ul class="collection">
-
                                 <li class="collection-item avatar" ng-repeat="reminder in reminders">
                                     <i class="material-icons circle">lightbulb_outline</i>
-                                    <span class="title" ng-bind="reminder.title"></span>
+                                    <h5 ng-bind="reminder.title"></h5>
                                     <p>Vence: <span ng-bind="reminder.lastDayToPay"></span> cada mes<br />
                                         Aprox.: <span ng-bind="reminder.aproxAmount"></span><br />
                                         Nota: <span ng-bind="reminder.note"></span>
@@ -38,6 +37,7 @@
                     </li>
 
                 </ul>
+                <span ng-show="categories.categories.length == 0">No hay ninguna categoria</span>
             </div>
         </div>
         <div class="row center-align">
@@ -49,28 +49,28 @@
         <div id="addCategory" class="modal">
             <div class="modal-content">
                 <h4>Categoria</h4>
-                <form>
+                <form ng-submit="saveNewCategory()" name="form.newCategory" id="newCategoryForm" novalidate>
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="category" type="text" ng-model="newCategory.categoryName">
+                            <input id="category" type="text" ng-model="newCategory.categoryName" required>
                             <label for="category">Categoria</label>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <a ng-click="saveNewCategory()" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
-                <a href="#" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>
+                <input type="submit" form="newCategoryForm" class=" modal-action modal-close waves-effect waves-green btn-flat" value="Agregar" ng-disabled="form.newCategory.$invalid"/>
+                <a href="#" ng-click="cleanNewCategoryForm()" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>
             </div>
         </div>
         <div id="addReminder" class="modal">
             <div class="modal-content">
                 <h4>Recordatorio</h4>
-                <form>
+                <form ng-submit="saveNewReminder()" name="form.newReminder" id="newReminderForm" novalidate>
                     <input id="categoryId" type="hidden" ng-model="newReminder.categoryId" />
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="title" type="text" ng-model="newReminder.title" />
+                            <input id="title" type="text" ng-model="newReminder.title" required />
                             <label for="title">Titulo</label>
                         </div>
                         <div class="input-field col s6">
@@ -84,7 +84,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                            <select material-select ng-model="newReminder.lastDay">
+                            <select material-select ng-model="newReminder.lastDay" required>
                                 <option value="" disabled selected>Fecha de vencimiento</option>
                                 <option ng-repeat="day in days" >{{day}}</option>
                             </select>
@@ -103,8 +103,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <a ng-click="saveNewReminder()" class=" modal-action modal-close waves-effect waves-green btn-flat">Agregar</a>
-                <a href="#" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>
+                <input type="submit" form="newReminderForm" class=" modal-action modal-close waves-effect waves-green btn-flat" value="Agregar" ng-disabled="form.newReminder.$invalid">
+                <a href="#" ng-click="cleanNewReminderForm()" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>
             </div>
         </div>
         <br />

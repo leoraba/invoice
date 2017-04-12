@@ -16,9 +16,10 @@ exports.addNewReminder = function(req, res) {
         if(error){
             console.log(error);
             res.json({success: false});
+        }else{
+            res.json({success: true});
         }
     });
-    res.json({success: true});
 }
 
 exports.getRemindersByCategory = function(req, res){

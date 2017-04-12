@@ -69,6 +69,11 @@ exports.SetupInvoicesController = function($scope, $http, $location) {
             $scope.dataLoading = false;
         }
     });
+    $scope.newCategory = {};
+  }
+
+  $scope.cleanNewCategoryForm = function(){
+    $scope.newCategory = {};
   }
 
   //save new reminder
@@ -88,6 +93,7 @@ exports.SetupInvoicesController = function($scope, $http, $location) {
     });
     $scope.newReminder = {};
   }
+
   $scope.removeReminder = function($reminderId){
     $http.delete('/api/reminder/' + $reminderId)
     .then(function (response) {
@@ -103,6 +109,11 @@ exports.SetupInvoicesController = function($scope, $http, $location) {
         }
     });
   }
+
+  $scope.cleanNewReminderForm = function(){
+    $scope.newReminder = {};
+  }
+  
 };
 
 exports.LoginController = function($scope, Auth, $location){
