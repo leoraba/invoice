@@ -14,8 +14,69 @@ exports.FooterController = function($scope) {
   }, 0);
 };
 
-exports.InvoicesGridController = function($scope) {
-  $scope.mensaje = "saludos";
+exports.InvoicesGridController = function($scope, $http) {
+  var myDate = new Date();
+  var currentMonth = myDate.getMonth();
+  var currentYear = myDate.getFullYear();
+
+  $scope.selectMonth = {
+      value: currentMonth.toString(),
+      choices: ["January", "February", "March", "April", "May",
+              "June", "July", "August", "September", "October", "November", "December"]
+  };
+
+  $scope.selectYear = {
+    value: currentYear.toString(),
+    choices: [myDate.getFullYear()+1, myDate.getFullYear(), myDate.getFullYear()-1, myDate.getFullYear()-2]
+  }
+
+  $http.get('/api/categories')
+  .then(function (response) {
+    $scope.categories = response.data.categories;
+  });
+
+  $http.get('/api/collection/2017/4')
+  .then(function (response) {
+    $scope.collectionInvoices = response.data.invoices;
+    $scope.collectionReminders = response.data.reminders;
+  });
+
+  $scope.openInvoiceInit = function(categoryId, reminderId){
+    $scope.openInvoice = {};
+    $scope.openInvoice.reminderId = reminderId;
+    $scope.openInvoice.categoryId = categoryId;
+    $scope.openInvoice.month = (parseInt($scope.selectMonth.value) + 1);
+    $scope.openInvoice.year = $scope.selectYear.value;
+  }
+
+  $scope.cleanOpenInvoiceForm = function(){
+    $scope.openInvoice = {};
+  }
+
+  $scope.saveInvoice = function(){
+    $http.post('/api/invoice', $scope.openInvoice)
+    .then(function (response) {
+        if(response.data.success) {
+          $http.get('/api/collection/'+ $scope.selectYear.value +'/' + (parseInt($scope.selectMonth.value) + 1) )
+          .then(function (response) {
+            $scope.collectionInvoices = response.data.invoices;
+            $scope.collectionReminders = response.data.reminders;
+          });
+        } else {
+            $scope.error = response.data.message;
+            $scope.dataLoading = false;
+        }
+    });
+  }
+
+  $scope.searchInvoicesByDate = function(){
+    $http.get('/api/collection/'+ $scope.selectYear.value +'/' + (parseInt($scope.selectMonth.value) + 1) )
+    .then(function (response) {
+      $scope.collectionInvoices = response.data.invoices;
+      $scope.collectionReminders = response.data.reminders;
+    });
+
+  }
 };
 
 exports.SetupInvoicesController = function($scope, $http, $location) {

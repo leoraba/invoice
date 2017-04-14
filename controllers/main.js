@@ -4,6 +4,7 @@ var status = require('http-status')
 var category = require('./category');
 var user = require('./user');
 var reminder = require('./reminder');
+var collection = require('./collection');
 
 module.exports = function(wagner) {
   var api = express.Router();
@@ -33,6 +34,11 @@ module.exports = function(wagner) {
   api.delete('/reminder/:reminderId', reminder.deleteReminder);
 
   api.get('/reminders/category/:categoryId', reminder.getRemindersByCategory);
+
+
+  api.get('/collection/:year/:month', collection.getCollectionInvoice);
+
+  api.post('/invoice', collection.addNewInvoice);
 
   return api;
 };

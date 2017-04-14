@@ -2,51 +2,94 @@
     <div class="div-container">
         <br><br>
         <div class="row">
-            <div class="col s12 m12 l6">
+            <div class="col s12 m12 l4">
                 <div input-field>
-                    <select material-select>
-                        <option>Enero</option>
-                        <option>Febrero</option>
-                        <option>Marzo</option>
+                    <select material-select ng-model="selectMonth.value">
+                        <option ng-repeat="(id, month) in selectMonth.choices" value="{{ id }}">{{ month }}</option>
                     </select>
-                    <label>Mes:</label>
+                    <label>Month:</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l4">
+                <div input-field>
+                    <select material-select ng-model="selectYear.value">
+                        <option ng-repeat="(id, year) in selectYear.choices" value="{{ year }}" >{{ year }}</option>
+                    </select>
+                    <label>Year:</label>
+                </div>
+            </div>
+            <div class="col s12 m12 l4">
+                <div input-field>
+                    <a href="#" ng-click="searchInvoicesByDate()" class="button"><i class="material-icons">search</i></a>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col s12 m12 l4">
-                <ul id="task-card" class="collection with-header">
-                    <li class="collection-header cyan">
-                        <h4 class="task-card-title">Monserrat</h4>
-                    </li>
-                    <li class="collection-item dismissable" style="touch-action: pan-y;">
-                        <input id="task1" type="checkbox">
-                        <label for="task1" style="text-decoration: none;">Del sur
-                        </label>
-                    </li>
-                    <li class="collection-item dismissable" style="touch-action: pan-y;">
-                        <input id="task2" type="checkbox">
-                        <label for="task2" style="text-decoration: none;">Anda
-                        </label>
-                    </li>
-                </ul>
-            </div>
+        <div ng-repeat="category in categories">
+            <h2 class="header">{{category.name}}</h2>
 
-            <div class="col s12 m12 l4">
-                <ul id="task-card" class="collection with-header">
-                    <li class="collection-header cyan">
-                        <h4 class="task-card-title">Zonte</h4>
-                    </li>
-                    <li class="collection-item dismissable" style="touch-action: pan-y;">
-                        <input id="task3" type="checkbox">
-                        <label for="task3" style="text-decoration: none;">Del sur
-                        </label>
-                    </li>
-                </ul>
-            </div>
+            <div class="row">
+                <div class="col s12 m12 l4" ng-repeat="reminder in collectionReminders | filter: category._id">
+                    <div class="card blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">{{ reminder.title }}</span>
+                            <span class="badge white-text red">last day to pay: {{ reminder.lastDayToPay }}</span>
+                            <br>
+                            <p>{{ reminder.note }}</p>
+                            <p ng-show="reminder.aproxAmount" class="right-align">Aprox $ {{ reminder.aproxAmount }}</p>
+                        </div>
+                        <div class="card-action">
+                            <a ng-click="openInvoiceInit(category._id, reminder._id)" data-target="openInvoice" modal>Open</a>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="col s12 m12 l4" ng-repeat="invoice in collectionInvoices | filter: category._id">
+                    <div class="card lime lighten-3">
+                        <div class="card-content">
+                            <span class="card-title red-text">{{ invoice.title }}</span>
+                            <span class="badge blue white-text">{{ invoice.status }}</span>
+                            <p ng-show="invoice.amount">Amount:  ${{ invoice.amount }}</p>
+                            <p ng-show="invoice.datePaid">Paid on: {{ invoice.datePaid }}</p>
+                            <p ng-show="invoice.note">Note: {{ invoice.note }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
+
+    </div>
+</div>
+
+<div id="openInvoice" class="modal">
+    <div class="modal-content">
+        <h4>Invoice</h4>
+        <form ng-submit="saveInvoice()" name="form.openInvoice" id="openInvoiceForm" novalidate>
+            <input id="reminderId" type="hidden" ng-model="openInvoice.reminderId" />
+            <input id="categoryId" type="hidden" ng-model="openInvoice.categoryId" />
+            <input id="month" type="hidden" ng-model="openInvoice.month" />
+            <input id="year" type="hidden" ng-model="openInvoice.year" />
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="text" input-date id="datePaid" format="yyyy-mm-dd" ng-model="openInvoice.datePaid" required>
+                    <label for="datePaid">Payment date</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="amount" type="text" ng-model="openInvoice.amount" />
+                    <label for="amount"> Amount $</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="note" class="materialize-textarea" ng-model="openInvoice.note"></textarea>
+                    <label for="note">Nota</label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <input type="submit" form="openInvoiceForm" class=" modal-action modal-close waves-effect waves-green btn-flat" value="Agregar" ng-disabled="form.openInvoice.$invalid">
+        <a href="#" ng-click="cleanOpenInvoiceForm()" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>
     </div>
 </div>

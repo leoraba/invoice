@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 var ObjectId = mongoose.Types.ObjectId;
 
 var Reminders = new mongoose.Schema({
@@ -8,7 +7,7 @@ var Reminders = new mongoose.Schema({
     lastDayToPay: { type: String, required: true },
     aproxAmount: { type: String },
     note: { type: String },
-    category: [{type: Schema.Types.ObjectId, ref: 'Category'}]
+    category: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}]
 });
 
 
