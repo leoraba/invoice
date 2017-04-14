@@ -9,17 +9,17 @@ exports.authenticateUser = function(req, res) {
     User.findOne({ username: req.body.username }, function(error, user) {
         if (error) {
             console.log(error);
-            res.json({success: false, message: "Error: contacte al administrador del sistema"});
+            res.json({success: false, message: "Error: Contact the system administrator"});
         }
         bcrypt.compare(req.body.password, user.password, function(err, result) {
             if (err) {
                 console.log(error);
-                res.json({success: false, message: "Error: contacte al administrador del sistema"});
+                res.json({success: false, message: "Error: Contact the system administrator"});
             }
             if(result){
                 res.json({success: true, user: { username: user.username, name: user.name }});
             }else{
-                res.json({success: false, message: "Usuario y/o contraseña son incorrectos"});
+                res.json({success: false, message: "User and/or password are incorrect"});
             }
         });
     });

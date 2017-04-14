@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Reminder = require("../models/reminder");
+var Invoice = require("../models/invoice");
 
 exports.addNewReminder = function(req, res) {  
     // POST /reminder
@@ -43,7 +44,14 @@ exports.deleteReminder = function(req, res){
             console.log(error);
             res.json({success: false});
         }else{
-            res.json({success: true});
+            Invoice.remove({ "reminder": req.params.reminderId }, function(error){
+                if(error){
+                    console.log(error);
+                    res.json({success: false});
+                }else{
+                    res.json({success: true});
+                }
+            });
         }
     });
 }

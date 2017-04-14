@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Category = require("../models/category");
 var Reminder = require("../models/reminder");
+var Invoice = require("../models/invoice");
 
 //Add a new question
 exports.newCategory = function(req, res) {  
@@ -31,7 +32,14 @@ exports.deleteCategory = function(req, res){
                     console.log(error);
                     res.json({success: false});
                 }else{
-                    res.json({success: true});
+                    Invoice.remove({ "category": req.params.categoryId }, function(error){
+                        if(error){
+                            console.log(error);
+                            res.json({success: false});
+                        }else{
+                            res.json({success: true});
+                        }
+                    });
                 }
             });
         }

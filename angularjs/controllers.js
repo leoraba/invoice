@@ -179,15 +179,21 @@ exports.SetupInvoicesController = function($scope, $http, $location) {
 
 exports.LoginController = function($scope, Auth, $location){
   $scope.credentials = {};
+
   $scope.login = function(){
-    Auth.login($scope.credentials, function(data) {
-      if(data.success) {
-          $location.path('/');
-      } else {
-          $scope.error = data.message;
-          $scope.dataLoading = false;
-      }
-    });
+    if($scope.credentials.username == undefined || $scope.credentials.password == undefined){
+      $scope.error = "User and/or password are incorrect";
+      $scope.dataLoading = false;
+    }else{
+      Auth.login($scope.credentials, function(data) {
+        if(data.success) {
+            $location.path('/');
+        } else {
+            $scope.error = data.message;
+            $scope.dataLoading = false;
+        }
+      });
+    }
   }
 };
 
@@ -195,15 +201,23 @@ exports.RegisterController = function($scope, $http, $location){
   $scope.user = {};
 
   $scope.register = function(){
-    $http.post('/api/register', $scope.user)
-    .then(function (response) {
-        if(response.data.success) {
-          $location.path('/');
-        } else {
-            $scope.error = response.data.message;
-            $scope.dataLoading = false;
-        }
-    });
+    if($scope.user.name == undefined || $scope.user.email == undefined || $scope.user.password == undefined || $scope.user.password2 == undefined){
+      $scope.error = "All fields are required";
+      $scope.dataLoading = false;
+    }else if($scope.user.password != $scope.user.password2){
+      $scope.error = "Passwords don't match";
+      $scope.dataLoading = false;
+    }else{
+      $http.post('/api/register', $scope.user)
+      .then(function (response) {
+          if(response.data.success) {
+            $location.path('/');
+          } else {
+              $scope.error = response.data.message;
+              $scope.dataLoading = false;
+          }
+      });
+    }
   };
 }
 

@@ -5,10 +5,10 @@
                 <div class="card blue-grey darken-1">
                     <form ng-submit="register()" role="form">
                         <div class="card-content white-text">
-                            <span class="card-title">Registrarse</span>
+                            <span class="card-title">Sign up</span>
                             <div class="input-field">
                                 <input id="name" type="text" class="validate" ng-model="user.name">
-                                <label for="name">Nombre completo</label>
+                                <label for="name">Name</label>
                             </div>
                             <div class="input-field">
                                 <input id="email" type="email" class="validate" ng-model="user.email">
@@ -20,13 +20,14 @@
                             </div>
                             <div class="input-field">
                                 <input id="password2" type="password" class="validate" ng-model="user.password2">
-                                <label for="password2">Confirmar password</label>
+                                <label for="password2">Confirm password</label>
                             </div>
                         </div>
                         <div class="card-action">
                             <button class="btn waves-effect waves-light" type="submit" name="action">Submit
                                 <i class="material-icons right">send</i>
                             </button>
+                            <span ng-bind="error" style="margin-left: 60px" class="grey-text text-lighten-3"></span>
                         </div>
                     </form>
                 </div>
