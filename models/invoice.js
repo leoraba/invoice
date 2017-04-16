@@ -11,7 +11,8 @@ var Invoice = new mongoose.Schema({
     amount: { type: String },
     note: { type: String },
     reminder: [{type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'}],
-    category: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}]
+    category: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}],
+    user: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });
 
 

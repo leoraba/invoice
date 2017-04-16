@@ -3,55 +3,65 @@ var Reminder = require("../models/reminder");
 var Invoice = require("../models/invoice");
 
 exports.addNewReminder = function(req, res) {  
-    // POST /reminder
+    // POST /api/reminder
 
-    var reminder = new Reminder({
-        title: req.body.title,
-        kind: req.body.kind,
-        lastDayToPay: req.body.lastDay,
-        aproxAmount: req.body.aproxAmount,
-        note: req.body.note,
-        category: req.body.categoryId
-    });
-    reminder.save(function(error){
-        if(error){
-            console.log(error);
-            res.json({success: false});
-        }else{
-            res.json({success: true});
-        }
-    });
+    if(req.user){
+        var reminder = new Reminder({
+            title: req.body.title,
+            kind: req.body.kind,
+            lastDayToPay: req.body.lastDay,
+            aproxAmount: req.body.aproxAmount,
+            note: req.body.note,
+            category: req.body.categoryId,
+            user: req.user._id
+        });
+        reminder.save(function(error){
+            if(error){
+                res.json({success: true, message: error.toString()});
+            }else{
+                res.json({success: true});
+            }
+        });
+    }else{
+        res.json({success: false});
+    }
 }
 
 exports.getRemindersByCategory = function(req, res){
-    // GET /reminders/category/:categoryId
+    // GET /api/reminders/category/:categoryId
 
-     Reminder.find({ "category": req.params.categoryId}).exec(function(error, reminders) {
-        if (error) {
-        return res.
-            status(status.INTERNAL_SERVER_ERROR).
-            json({ error: error.toString() });
-        }
-        res.json({ reminders: reminders });
-    });
+     if(req.user){
+        Reminder.find({ "category": req.params.categoryId}).exec(function(error, reminders) {
+            if (error) {
+                res.json({ success: true, message: error.toString() });
+            }
+            res.json({ success: true, reminders: reminders });
+        });
+    }else{
+        res.json({success: false});
+    }
 }
 
 exports.deleteReminder = function(req, res){
-    // DELETE /reminder/:reminderId
+    // DELETE /api/reminder/:reminderId
 
-    Reminder.remove({ "_id": req.params.reminderId}, function(error){
-        if(error){
-            console.log(error);
-            res.json({success: false});
-        }else{
-            Invoice.remove({ "reminder": req.params.reminderId }, function(error){
-                if(error){
-                    console.log(error);
-                    res.json({success: false});
-                }else{
-                    res.json({success: true});
-                }
-            });
-        }
-    });
+    if(req.user){
+        Reminder.remove({ "_id": req.params.reminderId}, function(error){
+            if(error){
+                console.log(error);
+                res.json({success: true, message: error.toString()});
+            }else{
+                Invoice.remove({ "reminder": req.params.reminderId }, function(error){
+                    if(error){
+                        console.log(error);
+                        res.json({success: true, message: error.toString()});
+                    }else{
+                        res.json({success: true});
+                    }
+                });
+            }
+        });
+    }else{
+        res.json({success: false});
+    }
 }

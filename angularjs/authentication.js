@@ -16,11 +16,15 @@ angular.module('AuthService', ['ngResource', 'ngStorage'])
     auth.login = function(credentials, resolve){
         $http.post('/api/authenticate', credentials)
             .then(function (response) {
-                if(response.data.success){
+                if(response.data.success == true){
                     $sessionStorage.user = response.data.user;
                     $rootScope.user = $sessionStorage.user;
+                    resolve(response.data);
+                }else{
+                    resolve({success: false, message: 'User and/or password are incorrect'});
                 }
-                resolve(response.data);
+            }, function(response){
+                resolve({success: false, message: 'User and/or password are incorrect'});
             });
     };
      

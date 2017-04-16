@@ -7,7 +7,8 @@ var Reminders = new mongoose.Schema({
     lastDayToPay: { type: String, required: true },
     aproxAmount: { type: String },
     note: { type: String },
-    category: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}]
+    category: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}],
+    user: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });
 
 

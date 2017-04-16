@@ -3,41 +3,31 @@ var User = require("../models/user");
 var bcrypt = require('bcrypt');
 
 //Authenticate user
-exports.authenticateUser = function(req, res) {  
-    // POST /authenticate
-
-    User.findOne({ username: req.body.username }, function(error, user) {
-        if (error) {
-            console.log(error);
-            res.json({success: false, message: "Error: Contact the system administrator"});
-        }
-        bcrypt.compare(req.body.password, user.password, function(err, result) {
-            if (err) {
-                console.log(error);
-                res.json({success: false, message: "Error: Contact the system administrator"});
-            }
-            if(result){
-                res.json({success: true, user: { username: user.username, name: user.name }});
-            }else{
-                res.json({success: false, message: "User and/or password are incorrect"});
-            }
-        });
-    });
-};
+exports.authenticateUser = function(req, res) {
+    if(req.user){
+        res.json({success: true, user: { username: req.user.username, name: req.user.name }});
+    }else{
+        res.json({success: false});
+    }
+}
 
 exports.registerUser = function(req, res){
-    // POST /register
+    // POST /api/register
 
-    var user = new User({
-        username: req.body.email,
-        password: req.body.password,
-        name: req.body.name
-    });
-    user.save(function(error) {
-        if (error) {
-            console.log(error);
-            res.json({success: false});
-        }
-    });
-    res.json({success: true});
+    if(req.user){
+        var user = new User({
+            username: req.body.email,
+            password: req.body.password,
+            name: req.body.name
+        });
+        user.save(function(error) {
+            if (error) {
+                console.log(error);
+                res.json({success: true, message: error.toString()});
+            }
+        });
+        res.json({success: true});
+    }else{
+        res.json({success: false});
+    }
 };

@@ -1,24 +1,17 @@
 var bodyparser = require('body-parser');
 var express = require('express');
-var status = require('http-status')
 var category = require('./category');
 var user = require('./user');
 var reminder = require('./reminder');
 var collection = require('./collection');
+var passport = require('passport');
 
 module.exports = function(wagner) {
   var api = express.Router();
 
   api.use(bodyparser.json());
 
-  api.get('/h1', 
-    require('connect-ensure-login').ensureLoggedIn('/login'), 
-    function(req, res){
-      res.json({msg: "Esto es una api segura"});
-    }
-  );
-
-  api.post('/authenticate', user.authenticateUser);
+  api.post('/authenticate', passport.authenticate('local'), user.authenticateUser);
 
   api.post('/register', user.registerUser);
 

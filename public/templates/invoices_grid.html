@@ -50,10 +50,12 @@
                         </div>
                     </div>
                 </div>
+
+                <span ng-show="collectionReminders.length == 0 && collectionInvoices.length == 0">There are no Invoices</span>
             </div>
 
         </div>
-
+        <span ng-show="categories.length == 0">There are no categories</span>
     </div>
 </div>
 
