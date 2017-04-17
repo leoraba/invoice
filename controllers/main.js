@@ -6,14 +6,19 @@ var reminder = require('./reminder');
 var collection = require('./collection');
 var passport = require('passport');
 
-module.exports = function(wagner) {
+module.exports = function(app) {
   var api = express.Router();
 
   api.use(bodyparser.json());
 
-  api.post('/authenticate', passport.authenticate('local'), user.authenticateUser);
+  api.post('/authenticate', passport.authenticate('local'), user.myUser);
 
   api.post('/register', user.registerUser);
+
+  api.get('/me', user.myUser);
+
+  api.post('/me', user.updateMyUser);
+
 
   api.post('/category', category.newCategory);
 

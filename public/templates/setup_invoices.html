@@ -7,14 +7,14 @@
                 <ul class="collapsible" data-collapsible="accordion" ng-show="categories.categories.length > 0">
                     
                     <li ng-repeat="cat in categories.categories">
-                        <div class="collapsible-header" ng-click="selectCategory(cat._id)"><i class="material-icons">filter_drama</i><span ng-bind="cat.name"></span></div>
+                        <div class="collapsible-header" ng-click="selectCategory(cat._id)"><i class="material-icons">info_outline</i><span ng-bind="cat.name"></span></div>
                         <div class="collapsible-body grey lighten-1">
                             <div class="right-align" style="margin-right: 100px">
                                 <a  href="#" ng-click="deleteCat(cat._id)" >delete category</a>
                             </div>
                             <ul class="collection">
                                 <li class="collection-item avatar" ng-repeat="reminder in reminders">
-                                    <i class="material-icons circle">lightbulb_outline</i>
+                                    <i class="material-icons circle">label_outline</i>
                                     <h5 ng-bind="reminder.title"></h5>
                                     <p>Due date: <span ng-bind="reminder.lastDayToPay"></span> each month<br />
                                         Aprox.: <span ng-bind="reminder.aproxAmount"></span><br />
@@ -24,7 +24,6 @@
                                         <a class="btn-floating"><i class="material-icons">menu</i></a>
                                         <ul>
                                             <li><a class="btn-floating red" title="Delete" ng-click="removeReminder(reminder._id)"><i class="material-icons">delete</i></a></li>
-                                            <li><a class="btn-floating blue" title="Edit" ><i class="material-icons">mode_edit</i></a></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -72,14 +71,6 @@
                         <div class="input-field col s6">
                             <input id="title" type="text" ng-model="newReminder.title" required />
                             <label for="title">Title</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <select class="icons"  material-select ng-model="newReminder.kind">
-                                <option value="" disabled selected>Sub category</option>
-                                <option value="1" data-icon="images/sample-1.jpg" class="left circle">Electricity</option>
-                                <option value="2" data-icon="images/sample-1.jpg" class="left circle">Water</option>
-                                <option value="3" data-icon="images/sample-1.jpg" class="left circle">Telephone</option>
-                            </select>
                         </div>
                     </div>
                     <div class="row">

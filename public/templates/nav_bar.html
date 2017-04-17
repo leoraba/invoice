@@ -1,15 +1,23 @@
   <nav>
     <div class="nav-wrapper orange">
       <a href="#" class="brand-logo"><i class="material-icons">cloud</i>Invoice</a>
-      <ul class="right">
-        <li ng-show="user"><a href="/" title="Inicio"><i class="material-icons">home</i></a></li>
-        <li ng-show="user"><a href="/setup" title="Configuracion"><i class="material-icons">view_module</i></a></li>
+      <a href="#" data-activates="mobile-demo" class="button-collapse" data-sidenav="left" data-closeonclick="true"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li ng-show="user"><a href="/" title="Home"><i class="material-icons">home</i></a></li>
+        <li ng-show="user"><a href="/setup" title="Reminders"><i class="material-icons">view_module</i></a></li>
         <li ng-show="user"><a class="dropdown-button" href='#' data-activates="dropdown1" dropdown><i class="material-icons right">more_vert</i><span ng-bind="user.name"></a></li>
       </ul>
       <ul id="dropdown1" class="dropdown-content">
-        <li><a href="#">Configuration</a></li>
+        <li><a href="/configuration">Configuration</a></li>
         <li class="divider"></li>
         <li><a href="/logout">Logout</a></li>
+      </ul>
+      <ul class="side-nav" id="mobile-demo">
+        <li ng-show="user"><a href="/" title="Home"><i class="material-icons">home</i>Home</a></li>
+        <li ng-show="user"><a href="/setup" title="Reminders"><i class="material-icons">view_module</i>Reminders</a></li>
+        <li class="divider"></li>
+        <li ng-show="user"><a href="/configuration">Configuration</a></li>
+        <li ng-show="user"><a href="/logout">Logout</a></li>
       </ul>
     </div>
   </nav>

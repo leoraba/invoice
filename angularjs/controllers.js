@@ -40,16 +40,20 @@ exports.InvoicesGridController = function($scope, $http, Auth, $location) {
     }
   });
 
-  $http.get('/api/collection/' + currentYear + '/' + (parseInt(currentMonth) + 1))
-  .then(function (response) {
-    if(response.data.success == true){
-      $scope.collectionInvoices = response.data.invoices;
-      $scope.collectionReminders = response.data.reminders;
-    }else{
-      Auth.logout();
-      $location.path('/login');
-    }
-  });
+  $scope.getMyCollection = function(year, month){
+    $http.get('/api/collection/' + year + '/' + month)
+    .then(function (response) {
+      if(response.data.success == true){
+        $scope.collectionInvoices = response.data.invoices;
+        $scope.collectionReminders = response.data.reminders;
+      }else{
+        Auth.logout();
+        $location.path('/login');
+      }
+    });
+  }
+
+  $scope.getMyCollection(currentYear, (parseInt(currentMonth) + 1));
 
   $scope.openInvoiceInit = function(categoryId, reminderId){
     $scope.openInvoice = {};
@@ -71,16 +75,7 @@ exports.InvoicesGridController = function($scope, $http, Auth, $location) {
             $scope.error = response.data.message;
             $scope.dataLoading = false;
           }else{
-            $http.get('/api/collection/'+ $scope.selectYear.value +'/' + (parseInt($scope.selectMonth.value) + 1) )
-            .then(function (response) {
-              if(response.data.success == true) {
-                $scope.collectionInvoices = response.data.invoices;
-                $scope.collectionReminders = response.data.reminders;
-              }else{
-                Auth.logout();
-                $location.path('/login');
-              }
-            });
+            $scope.getMyCollection($scope.selectYear.value, (parseInt($scope.selectMonth.value) + 1));
           }
         }else{
           Auth.logout();
@@ -90,17 +85,7 @@ exports.InvoicesGridController = function($scope, $http, Auth, $location) {
   }
 
   $scope.searchInvoicesByDate = function(){
-    $http.get('/api/collection/'+ $scope.selectYear.value +'/' + (parseInt($scope.selectMonth.value) + 1) )
-    .then(function (response) {
-      if(response.data.success == true) {
-        $scope.collectionInvoices = response.data.invoices;
-        $scope.collectionReminders = response.data.reminders;
-      }else{
-        Auth.logout();
-        $location.path('/login');
-      }
-    });
-
+    $scope.getMyCollection($scope.selectYear.value, (parseInt($scope.selectMonth.value) + 1));
   }
 };
 
@@ -128,32 +113,27 @@ exports.SetupInvoicesController = function($scope, $http, $location, Auth) {
     });
   }
 
-  $http.get('/api/categories')
-  .then(function (response) {
-    if(response.data.success == true){
-      $scope.categories = {};
-      $scope.categories.categories = response.data.categories;
-    }else{
-      Auth.logout();
-      $location.path('/login');
-    }
-  });
+  $scope.getMyCategories = function(){
+    $http.get('/api/categories')
+    .then(function (response) {
+      if(response.data.success == true){
+        $scope.categories = {};
+        $scope.categories.categories = response.data.categories;
+      }else{
+        Auth.logout();
+        $location.path('/login');
+      }
+    });
+  }
+
+  $scope.getMyCategories();
   
   //delete category
   $scope.deleteCat = function(catId){
     $http.delete('/api/category/' + catId)
     .then(function (response) {
       if(response.data.success == true){
-        $http.get('/api/categories')
-        .then(function (response) {
-          if(response.data.success == true){
-            $scope.categories = {};
-            $scope.categories.categories = response.data.categories;
-          }else{
-            Auth.logout();
-            $location.path('/login');
-          }
-        });
+        $scope.getMyCategories();
       }else{
         Auth.logout();
         $location.path('/login');
@@ -170,15 +150,7 @@ exports.SetupInvoicesController = function($scope, $http, $location, Auth) {
             $scope.error = response.data.message;
             $scope.dataLoading = false;
           }else{
-            $http.get('/api/categories')
-            .then(function (response) {
-                if(response.data.success == true){
-                  $scope.categories.categories = response.data.categories;
-                }else{
-                  Auth.logout();
-                  $location.path('/login');
-                }
-            });
+            $scope.getMyCategories();
           }
         } else {
           Auth.logout();
@@ -201,16 +173,7 @@ exports.SetupInvoicesController = function($scope, $http, $location, Auth) {
             $scope.error = response.data.message;
             $scope.dataLoading = false;
           }else{
-            //get all data from categories and reminders
-            $http.get('/api/categories')
-            .then(function (response) {
-                if(response.data.success == true){
-                  $scope.categories.categories = response.data.categories;
-                }else{
-                  Auth.logout();
-                  $location.path('/login');
-                }
-            });
+            $scope.getMyCategories();
           }
         } else {
           Auth.logout();
@@ -228,16 +191,7 @@ exports.SetupInvoicesController = function($scope, $http, $location, Auth) {
             $scope.error = response.data.message;
             $scope.dataLoading = false;
           }else{
-            //get all data from categories and reminders
-            $http.get('/api/categories')
-            .then(function (response) {
-                if(response.data.success == true){
-                  $scope.categories.categories = response.data.categories;
-                }else{
-                  Auth.logout();
-                  $location.path('/login');
-                }
-            });
+            $scope.getMyCategories();
           }
         } else {
           Auth.logout();
@@ -299,6 +253,50 @@ exports.RegisterController = function($scope, $http, $location){
       });
     }
   };
+}
+
+exports.ConfigurationController = function($scope, $http, $location, Auth){
+    $http.get('/api/me')
+    .then(function (response) {
+        if(response.data.success == true){
+          $scope.user = response.data.user;
+        }else{
+          Auth.logout();
+          $location.path('/login');
+        }
+    });
+
+    $scope.saveConfiguration = function(){
+      if($scope.user.name == undefined){
+        $scope.error = "All fields are required";
+        $scope.dataLoading = false;
+      }else if($scope.user.password != $scope.user.password2 && ($scope.user.password != undefined && $scope.user.password.length > 0)){
+        $scope.error = "Passwords don't match";
+        $scope.dataLoading = false;
+      }else{
+        $http.post('/api/me', { name: $scope.user.name, password: $scope.user.password})
+        .then(function (response) {
+          if(response.data.success == true){
+            if(response.data.message){
+              $scope.error = response.data.message;
+              $scope.dataLoading = false;
+            }else{
+              $http.get('/api/me')
+              .then(function (response) {
+                  if(response.data.success == true){
+                    Auth.updateUser(response.data.user);
+                    $location.path('/');
+                  }else{
+                    Auth.logout();
+                    $location.path('/login');
+                  }
+              });
+            }
+          }
+        });
+      }
+    }
+
 }
 
 exports.LogoutController = function($scope, Auth, $location){

@@ -42,6 +42,11 @@ angular.module('AuthService', ['ngResource', 'ngStorage'])
     auth.isLoggedIn = function(){
         return $sessionStorage.user != null;
     };
+
+    auth.updateUser = function(user){
+        $sessionStorage.user = user;
+        $rootScope.user = $sessionStorage.user;
+    }
      
  
     return auth;

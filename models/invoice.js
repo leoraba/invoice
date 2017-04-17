@@ -7,7 +7,6 @@ var Invoice = new mongoose.Schema({
     month: { type: String },
     datePaid: { type: String },
     status: { type: String },
-    kind: { type: String},
     amount: { type: String },
     note: { type: String },
     reminder: [{type: mongoose.Schema.Types.ObjectId, ref: 'Reminder'}],

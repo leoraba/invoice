@@ -8,7 +8,6 @@ exports.addNewReminder = function(req, res) {
     if(req.user){
         var reminder = new Reminder({
             title: req.body.title,
-            kind: req.body.kind,
             lastDayToPay: req.body.lastDay,
             aproxAmount: req.body.aproxAmount,
             note: req.body.note,

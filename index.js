@@ -1,7 +1,7 @@
 var express = require('express');
-var wagner = require('wagner-core');
+var mongoose = require('mongoose');
 
-require('./models/models')(wagner);
+mongoose.connect('mongodb://localhost:27017/invoice');
 
 var app = express();
 
@@ -12,10 +12,10 @@ app.use(require('morgan')('dev'));
 app.use(express.static(__dirname + '/public'));
 
 //authentication
-wagner.invoke(require('./controllers/auth'), { app: app });
+require('./controllers/auth')(app);
 
 //api routes
-app.use('/api', require('./controllers/main')(wagner));
+app.use('/api', require('./controllers/main')(app));
 
 //redirect to index.html page where angular will route internally
 app.use('/*', function(req, res){

@@ -44,7 +44,6 @@ exports.addNewInvoice = function(req, res){
                 month: req.body.month,
                 datePaid: req.body.datePaid,
                 status: status,
-                kind: rem.kind,
                 amount: req.body.amount,
                 note: req.body.note,
                 reminder: req.body.reminderId,
