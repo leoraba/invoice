@@ -36,20 +36,16 @@ exports.updateMyUser = function(req, res){
 exports.registerUser = function(req, res){
     // POST /api/register
 
-    if(req.user){
-        var user = new User({
-            username: req.body.email,
-            password: req.body.password,
-            name: req.body.name
-        });
-        user.save(function(error) {
-            if (error) {
-                console.log(error);
-                res.json({success: true, message: error.toString()});
-            }
-        });
-        res.json({success: true});
-    }else{
-        res.json({success: false});
-    }
+    var user = new User({
+        username: req.body.email,
+        password: req.body.password,
+        name: req.body.name
+    });
+    user.save(function(error) {
+        if (error) {
+            console.log(error);
+            res.json({success: true, message: error.toString()});
+        }
+    });
+    res.json({success: true});
 };
