@@ -101,6 +101,9 @@ exports.InvoicesGridController = function($scope, $http, Auth, $location) {
       if(response.data.success == true){
         $scope.collectionInvoices = response.data.invoices;
         $scope.collectionReminders = response.data.reminders;
+        $scope.totalPending = parseFloat(response.data.pending);
+        $scope.totalPaid = parseFloat(response.data.paid);
+        $scope.total = ($scope.totalPending + $scope.totalPaid).toFixed(2);
       }else{
         Auth.logout();
         $location.path('/login');

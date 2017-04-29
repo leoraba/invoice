@@ -20,6 +20,23 @@
             </div>
         </div>
 
+        <div class="card-panel light-blue lighten-4">
+            <div class="row">
+                <div class="col s12 m12 l3">
+                    <i class="large material-icons promo-img">feedback</i>
+                </div>
+                <div class="col s12 m12 l3">
+                        <p class="promo-caption">Pending: ${{ totalPending }}</p>
+                </div>
+                <div class="col s12 m12 l3">
+                        <p class="promo-caption">Paid: ${{ totalPaid }}</p>
+                </div>
+                <div class="col s12 m12 l3">
+                        <p class="promo-caption">TOTAL: ${{ total }}</p>
+                </div>
+            </div>
+        </div>
+
         <div ng-repeat="category in categories">
             <h2 class="header">{{category.name}}</h2>
 

@@ -9,16 +9,22 @@ exports.getCollectionInvoice = function(req, res) {
     // GET /api/collection/:year/:month
     if(req.user){
         Invoice.find({ year: req.params.year, month: req.params.month, user: req.user._id }, function(err, inv){
+            let totalPaid = 0;
+            let totalPending = 0;
             let arrayReminder = [];
             inv.forEach(function(value, key){
                 arrayReminder.push(value.reminder);
+                totalPaid += parseFloat(value.amount);
             });
             $find = { user: req.user._id };
             if(arrayReminder.length > 0){
                 $find = { _id: { $nin: arrayReminder}, user:req.user._id };
             }
             Reminder.find( $find, function(err, rem){
-                res.json({ success: true, invoices: inv, reminders: rem });
+                rem.forEach(function(value, key){
+                    totalPending += parseFloat(value.aproxAmount);
+                }); 
+                res.json({ success: true, invoices: inv, reminders: rem, paid: totalPaid.toFixed(2), pending: totalPending.toFixed(2) });
             });
         });
     }else{
