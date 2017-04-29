@@ -58,12 +58,13 @@ exports.InvoicesGridController = function($scope, $http, Auth, $location) {
 
   $scope.getMyCollection(currentYear, (parseInt(currentMonth) + 1));
 
-  $scope.openInvoiceInit = function(categoryId, reminderId){
+  $scope.openInvoiceInit = function(categoryId, reminderId, amount){
     $scope.openInvoice = {};
     $scope.openInvoice.reminderId = reminderId;
     $scope.openInvoice.categoryId = categoryId;
     $scope.openInvoice.month = (parseInt($scope.selectMonth.value) + 1);
     $scope.openInvoice.year = $scope.selectYear.value;
+    $scope.openInvoice.amount = amount;
   }
 
   $scope.cleanOpenInvoiceForm = function(){

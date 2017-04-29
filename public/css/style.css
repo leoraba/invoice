@@ -18,3 +18,7 @@
   margin-bottom:0;
   color: #607d8b;
 }
+
+.picker__date-display {
+  display: none;
+}

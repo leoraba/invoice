@@ -51,7 +51,7 @@
                             <p ng-show="reminder.aproxAmount" class="right-align">Aprox $ {{ reminder.aproxAmount }}</p>
                         </div>
                         <div class="card-action">
-                            <a ng-click="openInvoiceInit(category._id, reminder._id)" data-target="openInvoice" modal>Open</a>
+                            <a ng-click="openInvoiceInit(category._id, reminder._id, reminder.aproxAmount)" data-target="openInvoice" modal>Open</a>
                         </div>
                     </div>
                 </div>
