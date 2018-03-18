@@ -239,7 +239,9 @@ exports.SetupInvoicesController = function($scope, $http, $location, Auth) {
           $location.path('/login');
         }
     });
+    var categoryId = $scope.newReminder.categoryId;
     $scope.newReminder = {};
+    $scope.newReminder.categoryId = categoryId;
   }
 
   $scope.removeReminder = function($reminderId){
@@ -260,7 +262,9 @@ exports.SetupInvoicesController = function($scope, $http, $location, Auth) {
   }
 
   $scope.cleanNewReminderForm = function(){
+    var categoryId = $scope.newReminder.categoryId;
     $scope.newReminder = {};
+    $scope.newReminder.categoryId = categoryId;
   }
   
 };
