@@ -285,7 +285,7 @@ exports.LoginController = function($scope, Auth, $location){
   }
 };
 
-exports.RegisterController = function($scope, $http, $location){
+exports.RegisterController = function($scope, $http, $location, Auth){
   $scope.user = {};
 
   $scope.register = function(){

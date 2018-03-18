@@ -36,16 +36,22 @@ exports.updateMyUser = function(req, res){
 exports.registerUser = function(req, res){
     // POST /api/register
 
-    var user = new User({
-        username: req.body.email,
-        password: req.body.password,
-        name: req.body.name
-    });
-    user.save(function(error) {
-        if (error) {
-            console.log(error);
-            res.json({success: true, message: error.toString()});
+    User.findOne({ username: req.body.email }, function(error, user) {
+        if(user){
+            res.json({success: true, message: "Email exists"});
+        }else{
+            var user = new User({
+                username: req.body.email,
+                password: req.body.password,
+                name: req.body.name
+            });
+            user.save(function(error) {
+                if (error) {
+                    console.log(error);
+                    res.json({success: true, message: error.toString()});
+                }
+            });
+            res.json({success: true});
         }
     });
-    res.json({success: true});
 };
