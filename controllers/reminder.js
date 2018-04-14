@@ -30,7 +30,7 @@ exports.getRemindersByCategory = function(req, res){
     // GET /api/reminders/category/:categoryId
 
      if(req.user){
-        Reminder.find({ "category": req.params.categoryId}).exec(function(error, reminders) {
+        Reminder.find({ "category": req.params.categoryId, "status": { $ne: "inactive" }}).exec(function(error, reminders) {
             if (error) {
                 res.json({ success: true, message: error.toString() });
             }
@@ -45,14 +45,15 @@ exports.deleteReminder = function(req, res){
     // DELETE /api/reminder/:reminderId
 
     if(req.user){
-        Reminder.remove({ "_id": req.params.reminderId}, function(error){
-            if(error){
-                console.log(error);
-                res.json({success: true, message: error.toString()});
-            }else{
-                Invoice.remove({ "reminder": req.params.reminderId }, function(error){
+        Reminder.findOne({ "_id": req.params.reminderId }).exec(function(error, reminder){
+            if (error) {
+                res.json({ success: true, message: error.toString() });
+            } else if (!reminder) {
+                res.json({ success: true, message: "Invalid request" });
+            } else {
+                reminder.status = "inactive";
+                reminder.save(function(error){
                     if(error){
-                        console.log(error);
                         res.json({success: true, message: error.toString()});
                     }else{
                         res.json({success: true});
