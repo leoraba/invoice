@@ -11,6 +11,8 @@ exports.addNewReminder = function(req, res) {
             lastDayToPay: req.body.lastDay,
             aproxAmount: req.body.aproxAmount,
             note: req.body.note,
+            beginMonth: req.body.beginMonth,
+            beginYear: req.body.beginYear,
             category: req.body.categoryId,
             user: req.user._id
         });

@@ -7,6 +7,8 @@ var Reminders = new mongoose.Schema({
     aproxAmount: { type: String },
     note: { type: String },
     status: { type: String },
+    beginMonth: { type: Number },
+    beginYear: { type: Number },
     category: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}],
     user: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });

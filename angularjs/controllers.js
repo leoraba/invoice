@@ -49,6 +49,7 @@ exports.InvoicesGridController = function($scope, $http, Auth, $location) {
         $scope.totalPending = parseFloat(response.data.pending);
         $scope.totalPaid = parseFloat(response.data.paid);
         $scope.total = ($scope.totalPending + $scope.totalPaid).toFixed(2);
+        $scope.categoryCounter = response.data.categoryCounter;
       }else{
         Auth.logout();
         $location.path('/login');
@@ -103,6 +104,21 @@ exports.SetupInvoicesController = function($scope, $http, $location, Auth) {
   $scope.newReminder = {};
   $scope.categories = {};
 
+  var myDate = new Date();
+  var currentMonth = myDate.getMonth();
+  var currentYear = myDate.getFullYear();
+
+  $scope.selectMonth = {
+      value: currentMonth.toString(),
+      choices: ["January", "February", "March", "April", "May",
+              "June", "July", "August", "September", "October", "November", "December"]
+  };
+
+  $scope.selectYear = {
+    value: currentYear.toString(),
+    choices: [myDate.getFullYear()+1, myDate.getFullYear()]
+  }
+
   $scope.selectCategory = function(catId){
     $scope.reminders = {};
     $scope.newReminder.categoryId = catId;
@@ -118,7 +134,7 @@ exports.SetupInvoicesController = function($scope, $http, $location, Auth) {
   }
 
   $scope.getMyCategories = function(){
-    $http.get('/api/categories')
+    $http.get('/api/categories/onlyactive')
     .then(function (response) {
       if(response.data.success == true){
         $scope.categories = {};

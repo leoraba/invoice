@@ -38,7 +38,7 @@
         </div>
 
         <div ng-repeat="category in categories">
-            <h2 class="header">{{category.name}}</h2>
+            <h2 class="header" ng-show="categoryCounter[category._id] > 0">{{category.name}} {{(category.status=="inactive")?"(Removed)":""}}</h2>
 
             <div class="row">
                 <div class="col s12 m12 l4" ng-repeat="reminder in collectionReminders | filter: category._id">
@@ -67,13 +67,11 @@
                         </div>
                     </div>
                 </div>
-
-                <span ng-show="collectionReminders.length == 0 && collectionInvoices.length == 0">There are no Invoices</span>
             </div>
-
         </div>
         <span ng-show="categories.length == 0">There are no categories</span>
     </div>
+    <span ng-show="collectionReminders.length == 0 && collectionInvoices.length == 0">There are no Invoices</span>
 </div>
 
 <div id="openInvoice" class="modal">

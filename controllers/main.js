@@ -24,7 +24,7 @@ module.exports = function(app) {
 
   api.delete('/category/:categoryId', category.deleteCategory);
 
-  api.get('/categories', category.getAllCategories);
+  api.get('/categories/:onlyactive?', category.getAllCategories);
   
 
   api.post('/reminder', reminder.addNewReminder);

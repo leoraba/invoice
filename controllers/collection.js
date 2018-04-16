@@ -12,19 +12,31 @@ exports.getCollectionInvoice = function(req, res) {
             let totalPaid = 0;
             let totalPending = 0;
             let arrayReminder = [];
+            let categoryCounter = {};
             inv.forEach(function(value, key){
+                if(categoryCounter[value.category]) categoryCounter[value.category] = categoryCounter[value.category] + 1;
+                else categoryCounter[value.category] = 1;
                 arrayReminder.push(value.reminder);
                 totalPaid += parseFloat(value.amount);
             });
-            $find = { user: req.user._id };
+
+            let find = { user: req.user._id, 
+                        "status": { $ne: "inactive" }, 
+                        $or: [ 
+                            { "beginYear": { $eq: req.params.year }, "beginMonth": { $lte: req.params.month } }, 
+                            { "beginYear": { $lt: req.params.year  } }
+                        ] };
             if(arrayReminder.length > 0){
-                $find = { _id: { $nin: arrayReminder}, user:req.user._id };
+                find._id = { $nin: arrayReminder}
             }
-            Reminder.find( $find, function(err, rem){
+            Reminder.find( find, function(err, rem){
                 rem.forEach(function(value, key){
+                    if(categoryCounter[value.category]) categoryCounter[value.category] = categoryCounter[value.category] + 1;
+                    else categoryCounter[value.category] = 1;
                     totalPending += parseFloat(value.aproxAmount);
                 }); 
-                res.json({ success: true, invoices: inv, reminders: rem, paid: totalPaid.toFixed(2), pending: totalPending.toFixed(2) });
+                
+                res.json({ success: true, invoices: inv, reminders: rem, paid: totalPaid.toFixed(2), pending: totalPending.toFixed(2), categoryCounter: categoryCounter });
             });
         });
     }else{

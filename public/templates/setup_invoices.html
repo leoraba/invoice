@@ -16,8 +16,8 @@
                                 <li class="collection-item avatar" ng-repeat="reminder in reminders">
                                     <i class="material-icons circle">label_outline</i>
                                     <h5 ng-bind="reminder.title"></h5>
-                                    <p>Due date: <span ng-bind="reminder.lastDayToPay"></span> each month<br />
-                                        Aprox.: <span ng-bind="reminder.aproxAmount"></span><br />
+                                    <p>Due date: <span ng-bind="reminder.lastDayToPay"></span> each month since {{reminder.beginYear}} - {{reminder.beginMonth}}</span><br />
+                                        Aprox.: $<span ng-bind="reminder.aproxAmount"></span><br />
                                         Note: <span ng-bind="reminder.note"></span>
                                     </p>
                                     <div class="fixed-action-btn horizontal secondary-content">
@@ -71,6 +71,18 @@
                         <div class="input-field col s6">
                             <input id="title" type="text" ng-model="newReminder.title" required />
                             <label for="title">Title</label>
+                        </div>
+                        <div input-field class="col s3">
+                            <select material-select ng-model="newReminder.beginMonth">
+                                <option ng-repeat="(id, month) in selectMonth.choices" value="{{ id + 1 }}">{{ month }}</option>
+                            </select>
+                            <label>Begin Month:</label>
+                        </div>
+                        <div input-field class="col s3">
+                            <select material-select ng-model="newReminder.beginYear">
+                                <option ng-repeat="(id, year) in selectYear.choices" value="{{ year }}" >{{ year }}</option>
+                            </select>
+                            <label>Begin Year:</label>
                         </div>
                     </div>
                     <div class="row">
