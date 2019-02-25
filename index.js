@@ -1,9 +1,11 @@
-var express = require('express');
-var mongoose = require('mongoose');
+const express = require('express');
+const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/invoice');
+console.log(`Running Node version: ${process.versions.node}`);
 
-var app = express();
+mongoose.connect('mongodb://localhost:27017/invoice', { useNewUrlParser: true, useCreateIndex: true });
+
+const app = express();
 
 //log in console
 app.use(require('morgan')('dev'));

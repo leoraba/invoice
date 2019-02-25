@@ -1,15 +1,18 @@
-var bodyparser = require('body-parser');
-var express = require('express');
-var category = require('./category');
-var user = require('./user');
-var reminder = require('./reminder');
-var collection = require('./collection');
-var passport = require('passport');
+const bodyparser = require('body-parser');
+const express = require('express');
+const category = require('./category');
+const user = require('./user');
+const reminder = require('./reminder');
+const collection = require('./collection');
+const passport = require('passport');
+const helmet = require('helmet');
 
 module.exports = function(app) {
-  var api = express.Router();
+  let api = express.Router();
 
   api.use(bodyparser.json());
+
+  api.use(helmet());
 
   api.post('/authenticate', passport.authenticate('local'), user.myUser);
 

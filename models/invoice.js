@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var ObjectId = mongoose.Types.ObjectId;
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
-var Invoice = new mongoose.Schema({
+const Invoice = new mongoose.Schema({
     title: { type: String },
     year: { type: String },
     month: { type: String },

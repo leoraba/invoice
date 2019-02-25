@@ -1,12 +1,12 @@
-var mongoose = require('mongoose');
-var Reminder = require("../models/reminder");
-var Invoice = require("../models/invoice");
+const mongoose = require('mongoose');
+const Reminder = require("../models/reminder");
+const Invoice = require("../models/invoice");
 
 exports.addNewReminder = function(req, res) {  
     // POST /api/reminder
 
     if(req.user){
-        var reminder = new Reminder({
+        let reminder = new Reminder({
             title: req.body.title,
             lastDayToPay: req.body.lastDay,
             aproxAmount: req.body.aproxAmount,

@@ -1,14 +1,14 @@
-var mongoose = require('mongoose');
-var Category = require("../models/category");
-var Reminder = require("../models/reminder");
-var Invoice = require("../models/invoice");
+const mongoose = require('mongoose');
+const Category = require("../models/category");
+const Reminder = require("../models/reminder");
+const Invoice = require("../models/invoice");
 
 //Add a new question
 exports.newCategory = function(req, res) {  
     // POST /api/category
 
     if(req.user){
-        var category = new Category({
+        let category = new Category({
             name: req.body.categoryName,
             user: req.user._id
         });
@@ -67,7 +67,7 @@ exports.getAllCategories = function(req, res){
     // GET /api/categories
 
     if(req.user){
-        var findQry = { user: req.user._id };
+        let findQry = { user: req.user._id };
         if(req.params.onlyactive){
             findQry = { user: req.user._id, "status": { $ne: "inactive" } };
         }

@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var ObjectId = mongoose.Types.ObjectId;
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
-var Category = new mongoose.Schema({
+const Category = new mongoose.Schema({
     name: { type: String, required: true },
     status: { type: String },
     user: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]

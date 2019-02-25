@@ -1,9 +1,9 @@
-var User = require("../models/user");
+const User = require("../models/user");
 
 function setupAuth(app) {
-    var passport = require('passport');
-    var Strategy = require('passport-local').Strategy;
-    var bcrypt = require('bcrypt');
+    const passport = require('passport');
+    const Strategy = require('passport-local').Strategy;
+    const bcrypt = require('bcrypt');
 
     // High level serialize/de-serialize configuration for passport
     passport.serializeUser(function(user, done) {

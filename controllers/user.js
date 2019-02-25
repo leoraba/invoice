@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
-var User = require("../models/user");
-var bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+const User = require("../models/user");
+const bcrypt = require('bcrypt');
 
 //Authenticate user
 exports.myUser = function(req, res) {
@@ -40,7 +40,7 @@ exports.registerUser = function(req, res){
         if(user){
             res.json({success: true, message: "Email exists"});
         }else{
-            var user = new User({
+            let user = new User({
                 username: req.body.email,
                 password: req.body.password,
                 name: req.body.name

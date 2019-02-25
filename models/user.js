@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
-var User = new mongoose.Schema({
+const User = new mongoose.Schema({
     username: { type: String, required: true, lowercase: true, index: { unique: true } },
     password: { type: String, required: true },
     name: { type: String, required: true }
@@ -10,7 +10,7 @@ var User = new mongoose.Schema({
 
 // Define pre-save hook
 User.pre('save', function (next) {
-    var user = this;
+    let user = this;
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) {
         return next();
