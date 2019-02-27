@@ -2,7 +2,7 @@
     "scripts": {
         "start": "node index.js",
         "build": "browserify angularjs/index.js -o public/js/index.js",
-        "watch": "nodemon index.js | browserify angularjs/index.js -o public/js/index.js"
+        "watch": "nodemon index.js"
     },
     "engines": {
         "node": "<6.10.2"

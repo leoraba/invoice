@@ -103,6 +103,7 @@ exports.SetupInvoicesController = function($scope, $http, $location, Auth) {
   $scope.newCategory = {};
   $scope.newReminder = {};
   $scope.categories = {};
+  $scope.editReminder = {};
 
   var myDate = new Date();
   var currentMonth = myDate.getMonth();
@@ -205,6 +206,7 @@ exports.SetupInvoicesController = function($scope, $http, $location, Auth) {
     $scope.newReminder.categoryId = categoryId;
   }
 
+  //Remove reminder
   $scope.removeReminder = function($reminderId){
     $http.delete('/api/reminder/' + $reminderId)
     .then(function (response) {
@@ -222,10 +224,51 @@ exports.SetupInvoicesController = function($scope, $http, $location, Auth) {
     });
   }
 
+  //Open Edit reminder Modal
+  $scope.openEditReminderModal = function($reminderId){
+    $scope.reminders.forEach(reminder => {
+      if(reminder._id == $reminderId){
+        $scope.editReminder.reminderId = reminder._id;
+        $scope.editReminder.title = reminder.title;
+        $scope.editReminder.lastDay = reminder.lastDayToPay.toString();
+        $scope.editReminder.beginMonth = reminder.beginMonth.toString();
+        $scope.editReminder.beginYear = reminder.beginYear.toString();
+        $scope.editReminder.aproxAmount = reminder.aproxAmount;
+        $scope.editReminder.note = reminder.note;
+      }
+    });
+  }
+
+  //Edit reminder
+  $scope.submitEditReminder = function(){
+    $http.put('/api/reminder' , $scope.editReminder)
+    .then(function (response) {
+        if(response.data.success == true) {
+          if(response.data.message){
+            $scope.error = response.data.message;
+            $scope.dataLoading = false;
+          }else{
+            $scope.getMyCategories();
+          }
+        } else {
+          Auth.logout();
+          $location.path('/login');
+        }
+    });
+
+    $scope.editReminder = {};
+  }
+
   $scope.cleanNewReminderForm = function(){
     var categoryId = $scope.newReminder.categoryId;
     $scope.newReminder = {};
     $scope.newReminder.categoryId = categoryId;
+  }
+
+  $scope.cleanEditReminderForm = function(){
+    var categoryId = $scope.editReminder.categoryId;
+    $scope.editReminder = {};
+    $scope.editReminder.categoryId = categoryId;
   }
   
 };

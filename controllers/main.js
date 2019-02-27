@@ -32,6 +32,8 @@ module.exports = function(app) {
 
   api.post('/reminder', reminder.addNewReminder);
 
+  api.put('/reminder', reminder.editReminder);
+
   api.delete('/reminder/:reminderId', reminder.deleteReminder);
 
   api.get('/reminders/category/:categoryId', reminder.getRemindersByCategory);

@@ -24,6 +24,7 @@
                                         <a class="btn-floating"><i class="material-icons">menu</i></a>
                                         <ul>
                                             <li><a class="btn-floating red" title="Delete" ng-click="removeReminder(reminder._id)"><i class="material-icons">delete</i></a></li>
+                                            <li><a class="btn-floating red" title="Edit" ng-click="openEditReminderModal(reminder._id)" data-target="editReminderModal" modal><i class="material-icons">edit</i></a></li>
                                         </ul>
                                     </div>
                                 </li>
@@ -108,6 +109,55 @@
             <div class="modal-footer">
                 <input type="submit" form="newReminderForm" class=" modal-action modal-close waves-effect waves-green btn-flat" value="Add" ng-disabled="form.newReminder.$invalid">
                 <a href="#" ng-click="cleanNewReminderForm()" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+            </div>
+        </div>
+
+        <div id="editReminderModal" class="modal">
+            <div class="modal-content">
+                <h4>Reminder</h4>
+                <form ng-submit="submitEditReminder()" name="form.editReminder" id="editReminderForm" novalidate>
+                    <input id="reminderId" type="hidden" ng-model="editReminder.reminderId" />
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="title" type="text" ng-model="editReminder.title" required />
+                            <label for="title">Title</label>
+                        </div>
+                        <div input-field class="col s3">
+                            <select material-select ng-model="editReminder.beginMonth">
+                                <option ng-repeat="(id, month) in selectMonth.choices" value="{{ id + 1 }}">{{ month }}</option>
+                            </select>
+                            <label>Begin Month:</label>
+                        </div>
+                        <div input-field class="col s3">
+                            <select material-select ng-model="editReminder.beginYear">
+                                <option ng-repeat="(id, year) in selectYear.choices" value="{{ year }}" >{{ year }}</option>
+                            </select>
+                            <label>Begin Year:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select material-select ng-model="editReminder.lastDay" required>
+                                <option value="" disabled selected>Due date</option>
+                                <option ng-repeat="day in days" >{{day}}</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="aprox" type="text" ng-model="editReminder.aproxAmount" />
+                            <label for="aprox">Estimated $</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="note" class="materialize-textarea" ng-model="editReminder.note"></textarea>
+                            <label for="note">Note</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" form="editReminderForm" class=" modal-action modal-close waves-effect waves-green btn-flat" value="Edit" ng-disabled="form.editReminder.$invalid">
+                <a href="#" ng-click="cleanEditReminderForm()" class=" modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
             </div>
         </div>
         <br />

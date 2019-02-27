@@ -28,6 +28,37 @@ exports.addNewReminder = function(req, res) {
     }
 }
 
+exports.editReminder = function(req, res) {  
+    // PUT /api/reminder
+
+    if(req.user){
+        Reminder.findOne({ "_id": req.body.reminderId }).exec(function(error, reminder){
+            if (error) {
+                res.json({ success: true, message: error.toString() });
+            } else if (!reminder) {
+                res.json({ success: true, message: "Invalid request" });
+            } else {
+                reminder.title = req.body.title;
+                reminder.lastDayToPay = req.body.lastDay;
+                reminder.aproxAmount = req.body.aproxAmount;
+                reminder.note = req.body.note;
+                reminder.beginMonth = req.body.beginMonth,
+                reminder.beginYear = req.body.beginYear;
+                reminder.save(function(error){
+                    if(error){
+                        res.json({success: true, message: error.toString()});
+                    }else{
+                        res.json({success: true});
+                    }
+                });
+            }
+        });
+        
+    }else{
+        res.json({success: false});
+    }
+}
+
 exports.getRemindersByCategory = function(req, res){
     // GET /api/reminders/category/:categoryId
 
