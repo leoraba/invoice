@@ -1,0 +1,10 @@
+{
+    "database": {
+        "port": 27017,
+        "name": "invoice"
+    },
+    "port": 3000,
+    "log": {
+        "level": "dev"
+    }
+}

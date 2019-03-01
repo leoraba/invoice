@@ -1,7 +1,16 @@
 {
+    "name": "invoice",
+    "description": "Minimalist software to have control of your monthly payments",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Leonardo Rivera",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/leoraba/invoice.git"
+    },
     "scripts": {
         "start": "node index.js",
-        "build": "browserify angularjs/index.js -o public/js/index.js",
+        "build": "browserify frontend/angularjs/index.js -o frontend/public/js/index.js",
         "watch": "nodemon index.js"
     },
     "engines": {
@@ -11,6 +20,7 @@
         "bcrypt": "^3.0.4",
         "body-parser": "^1.18.3",
         "browserify": "14.1.0",
+        "config": "^3.0.1",
         "express": "^4.16.4",
         "express-session": "^1.15.6",
         "helmet": "^3.15.1",
@@ -18,8 +28,7 @@
         "morgan": "^1.9.1",
         "node": "^6.10.2",
         "passport": "0.3.2",
-        "passport-local": "1.0.0",
-        "underscore": "1.8.3"
+        "passport-local": "1.0.0"
     },
     "devDependencies": {
         "nodemon": "^1.18.10"

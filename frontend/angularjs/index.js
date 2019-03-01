@@ -1,17 +1,31 @@
-var controllers = require('./controllers');
-var directives = require('./directives');
 var auth = require('./authentication');
-var _ = require('underscore');
+//controlers
+var { navBarController } = require('./controllers/navBar');
+var { footerController } = require('./controllers/footer');
+var { invoicesGridController } = require('./controllers/invoicesGrid');
+var { setupInvoicesController } = require('./controllers/setupInvoices');
+var { loginController } = require('./controllers/login');
+var { registerController } = require('./controllers/register');
+var { configurationController } = require('./controllers/configuration');
+var { logoutController } = require('./controllers/logout');
+
+//directives
+var { footerBar } = require('./directives/footerBar');
+var { navBar } = require('./directives/navBar');
 
 var components = angular.module('mean-invoice.components', ['ng']);
 
-_.each(controllers, function(controller, name) {
-  components.controller(name, controller);
-});
+components.controller('NavBarController', navBarController);
+components.controller('FooterController', footerController);
+components.controller('InvoicesGridController', invoicesGridController);
+components.controller('SetupInvoicesController', setupInvoicesController);
+components.controller('LoginController', loginController);
+components.controller('RegisterController', registerController);
+components.controller('ConfigurationController', configurationController);
+components.controller('LogoutController', logoutController);
 
-_.each(directives, function(directive, name) {
-  components.directive(name, directive);
-});
+components.directive('footerBar', footerBar);
+components.directive('navBar', navBar);
 
 var app = angular.module('mean-invoice', ['mean-invoice.components', 'ui.router', 'ui.materialize', 'AuthService']);
 

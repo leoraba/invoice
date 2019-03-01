@@ -22,3 +22,8 @@
 .picker__date-display {
   display: none;
 }
+
+.dropdown-menu-user{
+  min-width: 100px;
+  text-align: right;
+}

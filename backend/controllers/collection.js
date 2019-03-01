@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var Category = require("../models/category");
 var Reminder = require("../models/reminder");
 var Invoice = require("../models/invoice");
-var _ = require("underscore");
 
 
 exports.getCollectionInvoice = function(req, res) {
