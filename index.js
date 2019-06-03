@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const config = require('config');
+const https = require('https');
+const fs = require('fs');
 
 console.log(`Running on Node version: ${process.versions.node}`);
 var dataBaseConn = new Promise((resolve, reject) => {
@@ -8,6 +10,7 @@ var dataBaseConn = new Promise((resolve, reject) => {
     const dbName = config.get("database.name");
     resolve(mongoose.connect(`mongodb://localhost:${dbPort}/${dbName}`, { useNewUrlParser: true, useCreateIndex: true }));
 }).then(success => {
+    const httpPort = config.get("port");
     const app = express();
 
     //log in console
@@ -28,9 +31,12 @@ var dataBaseConn = new Promise((resolve, reject) => {
         res.sendFile(__dirname + '/frontend/public/index.html');
     });
 
-    const httpPort = config.get("port");
-    app.listen(httpPort);
-    console.log(`Listening on port ${httpPort}!`);
+    https.createServer({
+        key: fs.readFileSync(config.get('pathCertificate.privateKey')),
+        cert: fs.readFileSync(config.get('pathCertificate.certFile'))
+      }, app).listen(httpPort, () => {
+        console.log(`Listening on port ${httpPort}!`);
+      })
 }).catch(error => {
     console.log(error);
     console.log("Exit.");

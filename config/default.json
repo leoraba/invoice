@@ -4,6 +4,10 @@
         "name": "invoice"
     },
     "port": 3000,
+    "pathCertificate": {
+        "privateKey": "server.key",
+        "certFile": "server.cert"
+    },
     "log": {
         "level": "dev"
     }
