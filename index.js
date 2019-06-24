@@ -1,14 +1,24 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const config = require('config');
-const https = require('https');
-const fs = require('fs');
 
 console.log(`Running on Node version: ${process.versions.node}`);
 var dataBaseConn = new Promise((resolve, reject) => {
     const dbPort = config.get("database.port");
     const dbName = config.get("database.name");
-    resolve(mongoose.connect(`mongodb://localhost:${dbPort}/${dbName}`, { useNewUrlParser: true, useCreateIndex: true }));
+    const dbPrefix = config.get("database.prefix");
+    const dbHost = config.get("database.host");
+    const dbUser = config.get("database.username");
+    const dbPass = config.get("database.password");
+    const dbOptions = config.get("database.options");
+    const dbEnv = config.get("database.env");
+    if(dbEnv == "local"){
+      resolve(mongoose.connect(`${dbPrefix}://${dbHost}:${dbPort}/${dbName}`, { useNewUrlParser: true, useCreateIndex: true }));
+    }else if(dbEnv == "atlas"){
+      resolve(mongoose.connect(`${dbPrefix}://${dbUser}:${dbPass}@${dbHost}/${dbName}?${dbOptions}`, { useNewUrlParser: true, useCreateIndex: true }));
+    }else{
+      reject("Unsupported MongoDB configuration (" + dbEnv + ")");
+    }
 }).then(success => {
     const httpPort = config.get("port");
     const app = express();
@@ -31,12 +41,8 @@ var dataBaseConn = new Promise((resolve, reject) => {
         res.sendFile(__dirname + '/frontend/public/index.html');
     });
 
-    https.createServer({
-        key: fs.readFileSync(config.get('pathCertificate.privateKey')),
-        cert: fs.readFileSync(config.get('pathCertificate.certFile'))
-      }, app).listen(httpPort, () => {
-        console.log(`Listening on port ${httpPort}!`);
-      })
+    app.listen(httpPort);
+    console.log(`Listening on port ${httpPort}!`);
 }).catch(error => {
     console.log(error);
     console.log("Exit.");

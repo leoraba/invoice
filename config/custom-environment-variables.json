@@ -1,0 +1,7 @@
+{
+    "database": {
+        "username": "INVOICE_DB_USERNAME",
+        "password": "INVOICE_DB_PASSWORD",
+        "host": "INVOICE_DB_HOST"
+    }
+}

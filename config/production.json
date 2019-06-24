@@ -1,0 +1,8 @@
+{
+    "database": {
+        "env": "atlas",
+        "prefix": "mongodb+srv",
+        "name": "invoice",
+        "options": "retryWrites=true&w=majority"
+    }
+}
