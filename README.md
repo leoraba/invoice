@@ -8,6 +8,23 @@ Software technologies:
 * AngularJS 1.6.3
 * NodeJS 6.x.x
 
+**Requirements**
+1. Setup MongoDB connection settings:
+
+for **local** please check config/default.json file
+
+for **Atlas** please check config/production.json file and setup these env variables:
+
+NODE_ENV
+
+INVOICE_DB_USERNAME
+
+INVOICE_DB_PASSWORD
+
+INVOICE_DB_HOST
+
+
+
 **Steps to run:** 
 1. npm install
 2. npm run start
