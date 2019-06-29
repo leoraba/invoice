@@ -13,9 +13,6 @@
         "build": "browserify frontend/angularjs/index.js -o frontend/public/js/index.js",
         "watch": "nodemon index.js"
     },
-    "engines": {
-        "node": "<6.10.2"
-    },
     "dependencies": {
         "bcrypt": "^3.0.4",
         "body-parser": "^1.18.3",
@@ -26,7 +23,6 @@
         "helmet": "^3.15.1",
         "mongoose": "^5.4.15",
         "morgan": "^1.9.1",
-        "node": "^6.10.2",
         "passport": "0.3.2",
         "passport-local": "1.0.0"
     },
