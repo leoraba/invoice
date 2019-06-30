@@ -14,13 +14,15 @@ var dataBaseConn = new Promise((resolve, reject) => {
     const dbEnv = config.get("database.env");
     if(dbEnv == "local"){
       resolve(mongoose.connect(`${dbPrefix}://${dbHost}:${dbPort}/${dbName}`, { useNewUrlParser: true, useCreateIndex: true }));
+      console.log(`Local connection ${dbPrefix}://${dbHost}:${dbPort}/${dbName}`);
     }else if(dbEnv == "atlas"){
       resolve(mongoose.connect(`${dbPrefix}://${dbUser}:${dbPass}@${dbHost}/${dbName}?${dbOptions}`, { useNewUrlParser: true, useCreateIndex: true }));
+      console.log(`Local connection ${dbPrefix}://${dbUser}:${dbPass}@${dbHost}/${dbName}?${dbOptions}`);
     }else{
       reject("Unsupported MongoDB configuration (" + dbEnv + ")");
     }
 }).then(success => {
-    const httpPort = config.get("port");
+    const httpPort = process.env.PORT || config.get("port");
     const app = express();
 
     //log in console

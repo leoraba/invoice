@@ -3,6 +3,9 @@
         "env": "atlas",
         "prefix": "mongodb+srv",
         "name": "invoice",
-        "options": "retryWrites=true&w=majority"
+        "options": "retryWrites=true&w=majority",
+        "username": "",
+        "password": "",
+        "host": ""
     }
 }
